@@ -1,4 +1,4 @@
-package eo.view.batterymeter
+package eo.view.batterymeter.sample
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("eo.view.batterymeter", appContext.packageName)
+        assertEquals("eo.view.batterymeter.sample", appContext.packageName)
     }
 }

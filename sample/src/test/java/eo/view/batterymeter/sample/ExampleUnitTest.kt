@@ -1,4 +1,4 @@
-package eo.view.batterymeter
+package eo.view.batterymeter.sample
 
 import org.junit.Test
 
