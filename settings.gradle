@@ -1,1 +1,1 @@
-include ':app', ':batterymeter'
+include ':sample', ':batterymeter'
