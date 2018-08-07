@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array name="battery_meter_bolt_points">
+        <item>0</item><item>15</item>
+        <item>4</item><item>15</item>
+        <item>4</item><item>26</item>
+        <item>12</item><item>11</item>
+        <item>8</item><item>11</item>
+        <item>8</item><item>0</item>
+    </integer-array>
+
+</resources>
