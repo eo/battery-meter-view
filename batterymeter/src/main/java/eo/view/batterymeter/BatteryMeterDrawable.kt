@@ -3,12 +3,12 @@ package eo.view.batterymeter
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import androidx.annotation.ArrayRes
 import androidx.core.graphics.ColorUtils
-import kotlin.math.floor
-import kotlin.math.max
+import eo.view.batterymeter.shape.BatteryShape
+import eo.view.batterymeter.shape.ChargingIndicator
 
 class BatteryMeterDrawable(context: Context) : Drawable() {
+
     companion object {
         const val MINIMUM_CHARGE_LEVEL = 0
         const val MAXIMUM_CHARGE_LEVEL = 100
@@ -18,63 +18,42 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
     private val height = context.resources.getDimensionPixelSize(R.dimen.battery_meter_height)
     private val aspectRatio = width.toFloat() / height
 
-    private val buttonHeightRatio = context.resources.getFraction(
-        R.fraction.battery_meter_button_height_ratio, 1, 1
-    )
+    private val batteryShapeBounds = Rect()
 
-    private val buttonWidthRatio = context.resources.getFraction(
-        R.fraction.battery_meter_button_width_ratio, 1, 1
-    )
+    private val batteryShape = BatteryShape(context)
+    private val chargingIndicator = ChargingIndicator(context)
 
-    private val boltBodyWidthRatio = context.resources.getFraction(
-        R.fraction.battery_meter_bolt_body_width_ratio, 1, 1
-    )
+    private val batteryPath = Path()
+    private val chargeLevelPath = Path()
+    private val chargeLevelClipRect = RectF()
+    private val chargeLevelClipPath = Path()
 
-    private val boltBodyHeightRatio = context.resources.getFraction(
-        R.fraction.battery_meter_bolt_body_height_ratio, 1, 1
-    )
+    private val padding = Rect()
 
-    private val boltBodyVerticalOffsetRatio = context.resources.getFraction(
-        R.fraction.battery_meter_bolt_body_vertical_offset_ratio, 1, 1
-    )
-
-    private val buttonRect = RectF()
-    private val bodyRect = RectF()
-
-    private val frameRect = Rect()
-    private val framePath = Path()
-    private val framePaint = Paint().apply {
+    private val batteryPaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
         color = ColorUtils.setAlphaComponent(Color.BLACK, (0xFF * 0.3f).toInt())
     }
 
-    private val chargeClipRect = RectF()
-    private val chargeClipPath = Path()
-    private val chargePath = Path()
-    private val chargePaint = Paint().apply {
+    private val chargeLevelPaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
         color = Color.BLACK
     }
 
-    private val boltScaledPoints = getScaledPointsArray(context, R.array.battery_meter_bolt_points)
-    private val boltRect = Rect()
-    private val boltPath = Path()
-    private val boltPaint = Paint().apply {
+    private val indicatorPaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
         color = Color.WHITE
     }
-
-    private val padding = Rect()
 
     var chargeLevel: Int? = null
         set(value) {
             val newChargeLevel = value?.coerceIn(MINIMUM_CHARGE_LEVEL, MAXIMUM_CHARGE_LEVEL)
             if (newChargeLevel != field) {
                 field = newChargeLevel
-                updateChargePath()
+                updateChargeLevelPath()
                 invalidateSelf()
             }
         }
@@ -83,7 +62,7 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
         set(value) {
             if (value != field) {
                 field = value
-                updateFramePath()
+                updateBatteryPath()
                 invalidateSelf()
             }
         }
@@ -103,19 +82,19 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
 
     fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         padding.set(left, top, right, bottom)
-        updateSize()
+        updateBatteryShapeBounds()
     }
 
     override fun onBoundsChange(bounds: Rect) {
-        updateSize()
+        updateBatteryShapeBounds()
     }
 
     override fun draw(canvas: Canvas) {
-        canvas.drawPath(framePath, framePaint)
-        canvas.drawPath(chargePath, chargePaint)
+        canvas.drawPath(batteryPath, batteryPaint)
+        canvas.drawPath(chargeLevelPath, chargeLevelPaint)
 
-        if (isCharging && boltPaint.color != Color.TRANSPARENT) {
-            canvas.drawPath(boltPath, boltPaint)
+        if (isCharging) {
+            canvas.drawPath(chargingIndicator.path, indicatorPaint)
         }
     }
 
@@ -127,11 +106,11 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
     }
 
     override fun setColorFilter(colorFilter: ColorFilter) {
-        framePaint.colorFilter = colorFilter
-        chargePaint.colorFilter = colorFilter
+        batteryPaint.colorFilter = colorFilter
+        chargeLevelPaint.colorFilter = colorFilter
     }
 
-    private fun updateSize() {
+    private fun updateBatteryShapeBounds() {
         if (bounds.isEmpty) return
 
         val availableWidth = bounds.width() - padding.left - padding.right
@@ -139,109 +118,42 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
         val availableAspectRatio = availableWidth.toFloat() / availableHeight
 
         if (availableAspectRatio > aspectRatio) {
-            frameRect.set(0, 0, (availableHeight * aspectRatio).toInt(), availableHeight)
+            batteryShapeBounds.set(0, 0, (availableHeight * aspectRatio).toInt(), availableHeight)
         } else {
-            frameRect.set(0, 0, availableWidth, (availableWidth / aspectRatio).toInt())
+            batteryShapeBounds.set(0, 0, availableWidth, (availableWidth / aspectRatio).toInt())
         }
 
-        frameRect.offset(
-            (availableWidth - frameRect.width()) / 2,
-            (availableHeight - frameRect.height()) / 2
+        batteryShapeBounds.offset(
+            (availableWidth - batteryShapeBounds.width()) / 2,
+            (availableHeight - batteryShapeBounds.height()) / 2
         )
 
-        updateFramePath()
+        updateBatteryPath()
     }
 
-    private fun updateFramePath() {
-        buttonRect.set(
-            0f,
-            0f,
-            floor(frameRect.width() * buttonWidthRatio),
-            floor(frameRect.height() * buttonHeightRatio)
-        )
-        buttonRect.offset(
-            frameRect.left + (frameRect.width() - buttonRect.width()) / 2,
-            frameRect.top.toFloat()
-        )
-
-        bodyRect.set(
-            frameRect.left.toFloat(),
-            buttonRect.bottom,
-            frameRect.right.toFloat(),
-            frameRect.bottom.toFloat()
-        )
-
-        framePath.reset()
-        framePath.addRect(buttonRect, Path.Direction.CW)
-        framePath.addRect(bodyRect, Path.Direction.CW)
+    private fun updateBatteryPath() {
+        batteryShape.bounds = batteryShapeBounds
+        batteryPath.set(batteryShape.path)
 
         if (isCharging) {
-            updateBoltPath()
-            framePath.op(boltPath, Path.Op.DIFFERENCE)
+            chargingIndicator.bounds = batteryShapeBounds
+            batteryPath.op(chargingIndicator.path, Path.Op.DIFFERENCE)
         }
 
-        updateChargePath()
+        updateChargeLevelPath()
     }
 
-    private fun updateChargePath() {
+    private fun updateChargeLevelPath() {
         val level = chargeLevel ?: MINIMUM_CHARGE_LEVEL
-        chargeClipRect.set(frameRect)
-        chargeClipRect.top += chargeClipRect.height() * (1f - level.toFloat() / MAXIMUM_CHARGE_LEVEL)
+        chargeLevelClipRect.set(batteryShapeBounds)
+        chargeLevelClipRect.top +=
+                chargeLevelClipRect.height() * (1f - level.toFloat() / MAXIMUM_CHARGE_LEVEL)
 
-        chargeClipPath.reset()
-        chargeClipPath.addRect(chargeClipRect, Path.Direction.CW)
+        chargeLevelClipPath.reset()
+        chargeLevelClipPath.addRect(chargeLevelClipRect, Path.Direction.CW)
 
-        chargePath.set(framePath)
-        chargePath.op(chargeClipPath, Path.Op.INTERSECT)
+        chargeLevelPath.set(batteryPath)
+        chargeLevelPath.op(chargeLevelClipPath, Path.Op.INTERSECT)
     }
 
-    private fun updateBoltPath() {
-        boltRect.set(
-            0,
-            0,
-            (bodyRect.width() * boltBodyWidthRatio).toInt(),
-            (bodyRect.height() * boltBodyHeightRatio).toInt()
-        )
-        boltRect.offset(
-            (bodyRect.left + (bodyRect.width() - boltRect.width()) / 2).toInt(),
-            (bodyRect.top + bodyRect.height() * boltBodyVerticalOffsetRatio).toInt()
-        )
-
-        boltPath.reset()
-        boltPath.moveTo(
-            boltRect.left + boltScaledPoints[0] * boltRect.width(),
-            boltRect.top + boltScaledPoints[1] * boltRect.height()
-        )
-        for (index in 2..(boltScaledPoints.size - 2) step 2) {
-            boltPath.lineTo(
-                boltRect.left + boltScaledPoints[index] * boltRect.width(),
-                boltRect.top + boltScaledPoints[index + 1] * boltRect.height()
-            )
-        }
-        boltPath.close()
-    }
-
-    private fun getScaledPointsArray(context: Context, @ArrayRes arrayRes: Int): FloatArray {
-        val pointsArray = context.resources.getIntArray(arrayRes)
-        return scalePointsArray(pointsArray)
-    }
-
-    private fun scalePointsArray(pointsArray: IntArray): FloatArray {
-        val scaledArray = FloatArray(pointsArray.size)
-
-        var maxX = pointsArray[0]
-        var maxY = pointsArray[1]
-
-        for (index in 2..(pointsArray.size - 2) step 2) {
-            maxX = max(maxX, pointsArray[index])
-            maxY = max(maxY, pointsArray[index + 1])
-        }
-
-        for (index in 0..(pointsArray.size - 2) step 2) {
-            scaledArray[index] = pointsArray[index] / maxX.toFloat()
-            scaledArray[index + 1] = pointsArray[index + 1] / maxY.toFloat()
-        }
-
-        return scaledArray
-    }
 }
