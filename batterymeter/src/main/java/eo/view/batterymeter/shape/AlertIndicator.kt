@@ -5,6 +5,7 @@ import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.RectF
 import eo.view.batterymeter.R
+import eo.view.batterymeter.util.computeShapeBounds
 
 class AlertIndicator(context: Context) {
 
@@ -38,15 +39,12 @@ class AlertIndicator(context: Context) {
     }
 
     private fun updateShapeRect(bounds: Rect) {
-        shapeRect.set(
-            0,
-            0,
-            (bounds.width() * shapeWidthRatio).toInt(),
-            (bounds.height() * shapeHeightRatio).toInt()
-        )
-        shapeRect.offset(
-            (bounds.left + (bounds.width() - shapeRect.width()) / 2),
-            (bounds.top + bounds.height() * shapeVerticalOffsetRatio).toInt()
+        computeShapeBounds(
+            bounds,
+            shapeWidthRatio,
+            shapeHeightRatio,
+            shapeVerticalOffsetRatio,
+            shapeRect
         )
 
         val upperPartRectHeight = bounds.height() * upperPartHeightRatio

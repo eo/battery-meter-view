@@ -1,5 +1,6 @@
 package eo.view.batterymeter.util
 
+import android.graphics.Rect
 import kotlin.math.max
 
 fun scaledPoints(vararg points: Int): FloatArray {
@@ -19,4 +20,24 @@ fun scaledPoints(vararg points: Int): FloatArray {
     }
 
     return scaledPoints
+}
+
+fun computeShapeBounds(
+    containerBounds: Rect,
+    shapeWidthRatio: Float,
+    shapeHeightRatio: Float,
+    shapeVerticalOffsetRatio: Float,
+    shapeBounds: Rect
+) {
+    val shapeWidth = (containerBounds.width() * shapeWidthRatio).toInt()
+    val shapeHeight = (containerBounds.height() * shapeHeightRatio).toInt()
+    val shapeTop = (containerBounds.height() * shapeVerticalOffsetRatio).toInt()
+    val shapeLeft = containerBounds.left + (containerBounds.width() - shapeWidth) / 2
+
+    shapeBounds.set(
+        shapeLeft,
+        shapeTop,
+        shapeLeft + shapeWidth,
+        shapeTop + shapeHeight
+    )
 }

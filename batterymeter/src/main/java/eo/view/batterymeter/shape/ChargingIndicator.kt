@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Path
 import android.graphics.Rect
 import eo.view.batterymeter.R
+import eo.view.batterymeter.util.computeShapeBounds
 import eo.view.batterymeter.util.scaledPoints
 
 class ChargingIndicator(context: Context) {
@@ -28,21 +29,14 @@ class ChargingIndicator(context: Context) {
     private val shapeRect = Rect()
 
     fun computePath(bounds: Rect, path: Path) {
-        updateShapeRect(bounds)
+        computeShapeBounds(
+            bounds,
+            shapeWidthRatio,
+            shapeHeightRatio,
+            shapeVerticalOffsetRatio,
+            shapeRect
+        )
         updatePath(path)
-    }
-
-    private fun updateShapeRect(bounds: Rect) {
-        shapeRect.set(
-            0,
-            0,
-            (bounds.width() * shapeWidthRatio).toInt(),
-            (bounds.height() * shapeHeightRatio).toInt()
-        )
-        shapeRect.offset(
-            (bounds.left + (bounds.width() - shapeRect.width()) / 2),
-            (bounds.top + bounds.height() * shapeVerticalOffsetRatio).toInt()
-        )
     }
 
     private fun updatePath(path: Path) {
