@@ -1,4 +1,4 @@
-package eo.view.batterymeter.shape
+package eo.view.batterymeter.util
 
 import kotlin.math.max
 

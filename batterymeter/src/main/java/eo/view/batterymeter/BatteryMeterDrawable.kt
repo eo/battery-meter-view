@@ -7,6 +7,7 @@ import androidx.core.graphics.ColorUtils
 import eo.view.batterymeter.shape.AlertIndicator
 import eo.view.batterymeter.shape.BatteryShape
 import eo.view.batterymeter.shape.ChargingIndicator
+import eo.view.batterymeter.util.getColorAttr
 
 class BatteryMeterDrawable(context: Context) : Drawable() {
 
@@ -14,6 +15,7 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
         const val MINIMUM_CHARGE_LEVEL = 0
         const val MAXIMUM_CHARGE_LEVEL = 100
 
+        const val DEFAULT_BATTERY_COLOR_ALPHA = (0xFF * 0.3f).toInt()
         const val DEFAULT_CRITICAL_CHARGE_LEVEL = 10
     }
 
@@ -38,13 +40,16 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
     private val batteryPaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
-        color = ColorUtils.setAlphaComponent(Color.BLACK, (0xFF * 0.3f).toInt())
+        color = ColorUtils.setAlphaComponent(
+            context.getColorAttr(android.R.attr.colorForeground),
+            DEFAULT_BATTERY_COLOR_ALPHA
+        )
     }
 
     private val chargeLevelPaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
-        color = Color.BLACK
+        color = context.getColorAttr(android.R.attr.colorForeground)
     }
 
     private val indicatorPaint = Paint().apply {

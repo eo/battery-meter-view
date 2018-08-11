@@ -64,7 +64,6 @@ class AlertIndicator(context: Context) {
             shapeRect.right.toFloat(),
             shapeRect.bottom.toFloat()
         )
-
     }
 
     private fun updatePath(path: Path) {

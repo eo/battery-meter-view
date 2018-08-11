@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Path
 import android.graphics.Rect
 import eo.view.batterymeter.R
+import eo.view.batterymeter.util.scaledPoints
 
 class ChargingIndicator(context: Context) {
 
