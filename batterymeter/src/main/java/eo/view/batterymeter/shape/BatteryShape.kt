@@ -8,12 +8,12 @@ import eo.view.batterymeter.R
 
 class BatteryShape(context: Context) {
 
-    private val buttonToBodyWidthRatio = context.resources.getFraction(
-        R.fraction.battery_meter_button_to_body_width_ratio, 1, 1
+    private val buttonWidthRatio = context.resources.getFraction(
+        R.fraction.battery_meter_button_width_ratio, 1, 1
     )
 
-    private val buttonToBodyHeightRatio = context.resources.getFraction(
-        R.fraction.battery_meter_button_to_body_height_ratio, 1, 1
+    private val buttonHeightRatio = context.resources.getFraction(
+        R.fraction.battery_meter_button_height_ratio, 1, 1
     )
 
     private val buttonRect = RectF()
@@ -31,8 +31,8 @@ class BatteryShape(context: Context) {
         }
 
     private fun updatePath() {
-        val buttonWidth = bounds.width() * buttonToBodyWidthRatio
-        val buttonHeight = bounds.height() * buttonToBodyHeightRatio
+        val buttonWidth = bounds.width() * buttonWidthRatio
+        val buttonHeight = bounds.height() * buttonHeightRatio
         val buttonLeft = bounds.left + (bounds.width() - buttonWidth) / 2
         val buttonTop = bounds.top.toFloat()
 

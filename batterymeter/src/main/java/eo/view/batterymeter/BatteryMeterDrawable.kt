@@ -45,7 +45,7 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
     private val indicatorPaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
-        color = Color.WHITE
+        color = Color.TRANSPARENT
     }
 
     var chargeLevel: Int? = null

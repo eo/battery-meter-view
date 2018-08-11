@@ -12,16 +12,16 @@ class ChargingIndicator(context: Context) {
         private val shapePoints = scaledPoints(0, 15, 4, 15, 4, 26, 12, 11, 8, 11, 8, 0)
     }
 
-    private val shapeToBoundsWidthRatio = context.resources.getFraction(
-        R.fraction.battery_meter_charging_indicator_to_bounds_width_ratio, 1, 1
+    private val shapeWidthRatio = context.resources.getFraction(
+        R.fraction.battery_meter_charging_indicator_width_ratio, 1, 1
     )
 
-    private val shapeToBoundsHeightRatio = context.resources.getFraction(
-        R.fraction.battery_meter_charging_indicator_to_bounds_height_ratio, 1, 1
+    private val shapeHeightRatio = context.resources.getFraction(
+        R.fraction.battery_meter_charging_indicator_height_ratio, 1, 1
     )
 
-    private val shapeToBoundsVerticalOffsetRatio = context.resources.getFraction(
-        R.fraction.battery_meter_charging_indicator_to_bounds_vertical_offset_ratio, 1, 1
+    private val shapeVerticalOffsetRatio = context.resources.getFraction(
+        R.fraction.battery_meter_charging_indicator_vertical_offset_ratio, 1, 1
     )
 
     private val shapeRect = Rect()
@@ -41,12 +41,12 @@ class ChargingIndicator(context: Context) {
         shapeRect.set(
             0,
             0,
-            (bounds.width() * shapeToBoundsWidthRatio).toInt(),
-            (bounds.height() * shapeToBoundsHeightRatio).toInt()
+            (bounds.width() * shapeWidthRatio).toInt(),
+            (bounds.height() * shapeHeightRatio).toInt()
         )
         shapeRect.offset(
             (bounds.left + (bounds.width() - shapeRect.width()) / 2),
-            (bounds.top + bounds.height() * shapeToBoundsVerticalOffsetRatio).toInt()
+            (bounds.top + bounds.height() * shapeVerticalOffsetRatio).toInt()
         )
 
         updatePath()
