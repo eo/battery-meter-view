@@ -26,18 +26,12 @@ class ChargingIndicator(context: Context) {
 
     private val shapeRect = Rect()
 
-    val path = Path()
+    fun computePath(bounds: Rect, path: Path) {
+        updateShapeRect(bounds)
+        updatePath(path)
+    }
 
-    var bounds = Rect()
-        get() = Rect(field)
-        set(value) {
-            if (field != value) {
-                field.set(value)
-                updateShapeRect()
-            }
-        }
-
-    private fun updateShapeRect() {
+    private fun updateShapeRect(bounds: Rect) {
         shapeRect.set(
             0,
             0,
@@ -48,11 +42,9 @@ class ChargingIndicator(context: Context) {
             (bounds.left + (bounds.width() - shapeRect.width()) / 2),
             (bounds.top + bounds.height() * shapeVerticalOffsetRatio).toInt()
         )
-
-        updatePath()
     }
 
-    private fun updatePath() {
+    private fun updatePath(path: Path) {
         path.reset()
         path.moveTo(
             shapeRect.left + shapePoints[0] * shapeRect.width(),

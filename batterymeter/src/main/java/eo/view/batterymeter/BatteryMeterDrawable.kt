@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.ColorUtils
+import eo.view.batterymeter.shape.AlertIndicator
 import eo.view.batterymeter.shape.BatteryShape
 import eo.view.batterymeter.shape.ChargingIndicator
 
@@ -12,6 +13,8 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
     companion object {
         const val MINIMUM_CHARGE_LEVEL = 0
         const val MAXIMUM_CHARGE_LEVEL = 100
+
+        const val DEFAULT_CRITICAL_CHARGE_LEVEL = 10
     }
 
     private val width = context.resources.getDimensionPixelSize(R.dimen.battery_meter_width)
@@ -22,8 +25,10 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
 
     private val batteryShape = BatteryShape(context)
     private val chargingIndicator = ChargingIndicator(context)
+    private val alertIndicator = AlertIndicator(context)
 
     private val batteryPath = Path()
+    private val indicatorPath = Path()
     private val chargeLevelPath = Path()
     private val chargeLevelClipRect = RectF()
     private val chargeLevelClipPath = Path()
@@ -67,6 +72,36 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
             }
         }
 
+    var criticalChargeLevel: Int? = DEFAULT_CRITICAL_CHARGE_LEVEL
+        set(value) {
+            if (value != field) {
+                field = value
+                updateBatteryPath()
+                invalidateSelf()
+            }
+        }
+
+    var batteryColor: Int
+        get() = batteryPaint.color
+        set(value) {
+            batteryPaint.color = value
+            invalidateSelf()
+        }
+
+    var chargeLevelColor: Int
+        get() = chargeLevelPaint.color
+        set(value) {
+            chargeLevelPaint.color = value
+            invalidateSelf()
+        }
+
+    var indicatorColor: Int
+        get() = indicatorPaint.color
+        set(value) {
+            indicatorPaint.color = value
+            invalidateSelf()
+        }
+
     override fun getIntrinsicWidth() = width
 
     override fun getIntrinsicHeight() = height
@@ -93,8 +128,8 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
         canvas.drawPath(batteryPath, batteryPaint)
         canvas.drawPath(chargeLevelPath, chargeLevelPaint)
 
-        if (isCharging) {
-            canvas.drawPath(chargingIndicator.path, indicatorPaint)
+        if (indicatorColor != Color.TRANSPARENT) {
+            canvas.drawPath(indicatorPath, indicatorPaint)
         }
     }
 
@@ -132,13 +167,20 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
     }
 
     private fun updateBatteryPath() {
+        val currentLevel = chargeLevel
+        val currentCriticalLevel = criticalChargeLevel
+
         batteryShape.bounds = batteryShapeBounds
         batteryPath.set(batteryShape.path)
 
-        if (isCharging) {
-            chargingIndicator.bounds = batteryShapeBounds
-            batteryPath.op(chargingIndicator.path, Path.Op.DIFFERENCE)
+        if (currentLevel == null) {
+            // TODO: show unknown indicator
+        } else if (isCharging) {
+            chargingIndicator.computePath(batteryShapeBounds, indicatorPath)
+        } else if (currentCriticalLevel != null && currentLevel <= currentCriticalLevel) {
+            alertIndicator.computePath(batteryShapeBounds, indicatorPath)
         }
+        batteryPath.op(indicatorPath, Path.Op.DIFFERENCE)
 
         updateChargeLevelPath()
     }
