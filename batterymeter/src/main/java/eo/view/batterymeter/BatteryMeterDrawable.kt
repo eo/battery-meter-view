@@ -7,6 +7,7 @@ import androidx.core.graphics.ColorUtils
 import eo.view.batterymeter.shape.AlertIndicator
 import eo.view.batterymeter.shape.BatteryShape
 import eo.view.batterymeter.shape.ChargingIndicator
+import eo.view.batterymeter.shape.UnknownIndicator
 import eo.view.batterymeter.util.getColorAttr
 
 class BatteryMeterDrawable(context: Context) : Drawable() {
@@ -28,6 +29,7 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
     private val batteryShape = BatteryShape(context)
     private val chargingIndicator = ChargingIndicator(context)
     private val alertIndicator = AlertIndicator(context)
+    private val unknownIndicator = UnknownIndicator(context)
 
     private val batteryPath = Path()
     private val indicatorPath = Path()
@@ -179,7 +181,7 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
         batteryPath.set(batteryShape.path)
 
         if (currentLevel == null) {
-            // TODO: show unknown indicator
+            unknownIndicator.computePath(batteryShapeBounds, indicatorPath)
         } else if (isCharging) {
             chargingIndicator.computePath(batteryShapeBounds, indicatorPath)
         } else if (currentCriticalLevel != null && currentLevel <= currentCriticalLevel) {

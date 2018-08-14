@@ -11,7 +11,9 @@ class ChargingIndicator(context: Context) {
 
     companion object {
         // bolt shape points (x1, y1, x2, y2, ...)
-        private val shapePoints = scaledPoints(0, 15, 4, 15, 4, 26, 12, 11, 8, 11, 8, 0)
+        private val shapePoints = scaledPoints(
+            0f, 7.5f, 2f, 7.5f, 2f, 13f, 6f, 5.5f, 4f, 5.5f, 4f, 0f
+        )
     }
 
     private val shapeWidthRatio = context.resources.getFraction(

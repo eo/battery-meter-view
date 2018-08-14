@@ -3,9 +3,7 @@ package eo.view.batterymeter.util
 import android.graphics.Rect
 import kotlin.math.max
 
-fun scaledPoints(vararg points: Int): FloatArray {
-    val scaledPoints = FloatArray(points.size)
-
+fun scaledPoints(vararg points: Float): FloatArray {
     var maxX = points[0]
     var maxY = points[1]
 
@@ -15,11 +13,11 @@ fun scaledPoints(vararg points: Int): FloatArray {
     }
 
     for (index in 0..(points.size - 2) step 2) {
-        scaledPoints[index] = points[index] / maxX.toFloat()
-        scaledPoints[index + 1] = points[index + 1] / maxY.toFloat()
+        points[index] = points[index] / maxX
+        points[index + 1] = points[index + 1] / maxY
     }
 
-    return scaledPoints
+    return points
 }
 
 fun computeShapeBounds(
