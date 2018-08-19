@@ -1,0 +1,11 @@
+apply plugin: 'kotlin'
+apply plugin: 'application'
+
+mainClassName = 'eo.view.batterymeter.shapes.ApplicationKt'
+defaultTasks 'run'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation deps.kotlinStdLib
+}

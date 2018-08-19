@@ -1,1 +1,1 @@
-include ':sample', ':batterymeter'
+include ':sample', ':batterymeter', ':shapes'
