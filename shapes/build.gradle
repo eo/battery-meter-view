@@ -2,10 +2,13 @@ apply plugin: 'kotlin'
 apply plugin: 'application'
 
 mainClassName = 'eo.view.batterymeter.shapes.ApplicationKt'
-defaultTasks 'run'
 
 dependencies {
+    final batikVersion = '1.10'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation deps.kotlinStdLib
+    implementation "org.apache.xmlgraphics:batik-bridge:$batikVersion"
+    implementation "org.apache.xmlgraphics:batik-parser:$batikVersion"
 }
