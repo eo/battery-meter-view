@@ -24,9 +24,13 @@ fun extractPathData(svgElement: SVGElement): String {
     return pathElement.attributes.getNamedItem("d").nodeValue
 }
 
-fun parsePathData(pathData: String) {
+fun parsePathData(pathData: String): List<PathCommand> {
+    val pathDataHandler = PathDataHandler()
+
     with(PathParser()) {
-        pathHandler = PathDataHandler()
+        pathHandler = pathDataHandler
         parse(pathData)
     }
+
+    return pathDataHandler.pathCommands
 }

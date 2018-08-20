@@ -20,7 +20,10 @@ fun main(args: Array<String>) {
         val svgElement = svgDocument.rootElement
         val viewBox = extractViewBox(svgElement)
         val pathData = extractPathData(svgElement)
+        val pathCommands = parsePathData(pathData)
 
-        parsePathData(pathData)
+        println(viewBox)
+        pathCommands.forEach { println(it) }
+        println()
     }
 }
