@@ -34,3 +34,19 @@ fun parsePathData(pathData: String): List<PathCommand> {
 
     return pathDataHandler.pathCommands
 }
+
+fun scaledPathCommands(pathCommands: List<PathCommand>, viewBox: ViewBox): List<PathCommand> {
+    return pathCommands.map {
+        val parameters = it.parameters.mapIndexed { index, value ->
+            val scale = if (index.rem(2) == 0) {
+                viewBox.width
+            } else {
+                viewBox.height
+            }
+
+            value / scale.toBigDecimal()
+        }.toTypedArray()
+
+        PathCommand(it.command, *parameters)
+    }.toList()
+}
