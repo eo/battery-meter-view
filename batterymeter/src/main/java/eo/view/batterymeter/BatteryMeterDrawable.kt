@@ -4,47 +4,54 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.ColorUtils
-import eo.view.batterymeter.shape.AlertIndicator
-import eo.view.batterymeter.shape.BatteryShape
-import eo.view.batterymeter.shape.ChargingIndicator
-import eo.view.batterymeter.shape.UnknownIndicator
 import eo.view.batterymeter.util.getColorAttr
+import java.io.ByteArrayInputStream
+import java.io.DataInputStream
 
-class BatteryMeterDrawable(context: Context) : Drawable() {
+class BatteryMeterDrawable(
+    private val context: Context,
+    theme: BatteryMeter.Theme = BatteryMeter.Theme.SHARP
+) : Drawable(), BatteryMeter {
 
     companion object {
         const val MINIMUM_CHARGE_LEVEL = 0
         const val MAXIMUM_CHARGE_LEVEL = 100
 
-        const val DEFAULT_BATTERY_COLOR_ALPHA = (0xFF * 0.3f).toInt()
-        const val DEFAULT_CRITICAL_CHARGE_LEVEL = 10
+        const val BATTERY_COLOR_ALPHA = (0xFF * 0.3f).toInt()
+        const val CRITICAL_CHARGE_LEVEL = 10
     }
 
-    private val width = context.resources.getDimensionPixelSize(R.dimen.battery_meter_width)
-    private val height = context.resources.getDimensionPixelSize(R.dimen.battery_meter_height)
-    private val aspectRatio = width.toFloat() / height
+    private val padding = Rect()
 
     private val batteryShapeBounds = Rect()
-
-    private val batteryShape = BatteryShape(context)
-    private val chargingIndicator = ChargingIndicator(context)
-    private val alertIndicator = AlertIndicator(context)
-    private val unknownIndicator = UnknownIndicator(context)
-
     private val batteryPath = Path()
     private val indicatorPath = Path()
     private val chargeLevelPath = Path()
     private val chargeLevelClipRect = RectF()
     private val chargeLevelClipPath = Path()
 
-    private val padding = Rect()
+    private val intrinsicSize =
+        context.resources.getDimensionPixelSize(R.dimen.battery_meter_intrinsic_size)
+
+    private var aspectRatio: Float = 1f
+        set(value) {
+            if (value != field) {
+                field = value
+                updateBatteryShapeBounds()
+            }
+        }
+
+    private lateinit var batteryShapeDataStream: DataInputStream
+    private lateinit var alertIndicatorDataStream: DataInputStream
+    private lateinit var chargingIndicatorDataStream: DataInputStream
+
 
     private val batteryPaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
         color = ColorUtils.setAlphaComponent(
             context.getColorAttr(android.R.attr.colorForeground),
-            DEFAULT_BATTERY_COLOR_ALPHA
+            BATTERY_COLOR_ALPHA
         )
     }
 
@@ -60,7 +67,17 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
         color = Color.TRANSPARENT
     }
 
-    var chargeLevel: Int? = null
+
+    override var theme = theme
+        set(value) {
+            if (value != field) {
+                field = value
+                loadThemeShapes()
+                invalidateSelf()
+            }
+        }
+
+    override var chargeLevel: Int? = null
         set(value) {
             val newChargeLevel = value?.coerceIn(MINIMUM_CHARGE_LEVEL, MAXIMUM_CHARGE_LEVEL)
             if (newChargeLevel != field) {
@@ -70,20 +87,20 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
             }
         }
 
-    var isCharging: Boolean = false
+    override var isCharging: Boolean = false
         set(value) {
             if (value != field) {
                 field = value
-                updateBatteryPath()
+                updateBatteryAndIndicatorPaths()
                 invalidateSelf()
             }
         }
 
-    var criticalChargeLevel: Int? = DEFAULT_CRITICAL_CHARGE_LEVEL
+    override var criticalChargeLevel: Int? = CRITICAL_CHARGE_LEVEL
         set(value) {
             if (value != field) {
                 field = value
-                updateBatteryPath()
+                updateBatteryAndIndicatorPaths()
                 invalidateSelf()
             }
         }
@@ -109,9 +126,22 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
             invalidateSelf()
         }
 
-    override fun getIntrinsicWidth() = width
 
-    override fun getIntrinsicHeight() = height
+    init {
+        loadThemeShapes()
+    }
+
+    override fun getIntrinsicWidth() = if (aspectRatio < 1) {
+        (intrinsicSize * aspectRatio).toInt()
+    } else {
+        intrinsicSize
+    }
+
+    override fun getIntrinsicHeight() = if (aspectRatio < 1) {
+        intrinsicSize
+    } else {
+        (intrinsicSize / aspectRatio).toInt()
+    }
 
     override fun getPadding(padding: Rect): Boolean {
         if (padding.left == 0 && padding.top == 0 && padding.right == 0 && padding.bottom == 0) {
@@ -134,10 +164,7 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
     override fun draw(canvas: Canvas) {
         canvas.drawPath(batteryPath, batteryPaint)
         canvas.drawPath(chargeLevelPath, chargeLevelPaint)
-
-        if (indicatorColor != Color.TRANSPARENT) {
-            canvas.drawPath(indicatorPath, indicatorPaint)
-        }
+        canvas.drawPath(indicatorPath, indicatorPaint)
     }
 
     override fun setAlpha(alpha: Int) {
@@ -150,6 +177,7 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
     override fun setColorFilter(colorFilter: ColorFilter) {
         batteryPaint.colorFilter = colorFilter
         chargeLevelPaint.colorFilter = colorFilter
+        indicatorPaint.colorFilter = colorFilter
     }
 
     private fun updateBatteryShapeBounds() {
@@ -170,22 +198,22 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
             (availableHeight - batteryShapeBounds.height()) / 2
         )
 
-        updateBatteryPath()
+        updateBatteryAndIndicatorPaths()
     }
 
-    private fun updateBatteryPath() {
+    private fun updateBatteryAndIndicatorPaths() {
         val currentLevel = chargeLevel
         val currentCriticalLevel = criticalChargeLevel
 
-        batteryShape.bounds = batteryShapeBounds
-        batteryPath.set(batteryShape.path)
+        performPathCommands(batteryShapeDataStream, batteryPath)
 
+        indicatorPath.reset()
         if (currentLevel == null) {
-            unknownIndicator.computePath(batteryShapeBounds, indicatorPath)
+            // TODO: unknown indicator
         } else if (isCharging) {
-            chargingIndicator.computePath(batteryShapeBounds, indicatorPath)
+            performPathCommands(chargingIndicatorDataStream, indicatorPath)
         } else if (currentCriticalLevel != null && currentLevel <= currentCriticalLevel) {
-            alertIndicator.computePath(batteryShapeBounds, indicatorPath)
+            performPathCommands(alertIndicatorDataStream, indicatorPath)
         }
         batteryPath.op(indicatorPath, Path.Op.DIFFERENCE)
 
@@ -205,4 +233,83 @@ class BatteryMeterDrawable(context: Context) : Drawable() {
         chargeLevelPath.op(chargeLevelClipPath, Path.Op.INTERSECT)
     }
 
+    private fun loadThemeShapes() {
+        val rawResourceId = when (theme) {
+            BatteryMeter.Theme.SHARP -> R.raw.battery_shapes_sharp
+            BatteryMeter.Theme.ROUNDED -> R.raw.battery_shapes_rounded
+        }
+
+        val rawBytes = context.resources.openRawResource(rawResourceId).readBytes()
+        DataInputStream(ByteArrayInputStream(rawBytes)).use { input ->
+            val newAspectRatio = input.readFloat()
+
+            var currentShapeLength = input.readInt()
+            var currentOffset = rawBytes.size - input.available()
+
+            batteryShapeDataStream = DataInputStream(
+                ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
+            )
+            input.skipBytes(currentShapeLength)
+
+            currentShapeLength = input.readInt()
+            currentOffset = rawBytes.size - input.available()
+
+            alertIndicatorDataStream = DataInputStream(
+                ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
+            )
+            input.skipBytes(currentShapeLength)
+
+            currentShapeLength = input.readInt()
+            currentOffset = rawBytes.size - input.available()
+
+            chargingIndicatorDataStream = DataInputStream(
+                ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
+            )
+
+            aspectRatio = newAspectRatio
+        }
+    }
+
+    private fun performPathCommands(pathDataStream: DataInputStream, path: Path) {
+
+        fun xRatioToCoordinate(xRatio: Float) =
+            batteryShapeBounds.left + xRatio * batteryShapeBounds.width()
+
+        fun yRatioToCoordinate(yRatio: Float) =
+            batteryShapeBounds.top + yRatio * batteryShapeBounds.height()
+
+        path.reset()
+        pathDataStream.reset()
+
+
+        while (pathDataStream.available() > 0) {
+            val command = pathDataStream.readChar()
+
+            when (command) {
+                'C' -> {
+                    path.cubicTo(
+                        xRatioToCoordinate(pathDataStream.readFloat()),
+                        yRatioToCoordinate(pathDataStream.readFloat()),
+                        xRatioToCoordinate(pathDataStream.readFloat()),
+                        yRatioToCoordinate(pathDataStream.readFloat()),
+                        xRatioToCoordinate(pathDataStream.readFloat()),
+                        yRatioToCoordinate(pathDataStream.readFloat())
+                    )
+                }
+                'L' -> {
+                    path.lineTo(
+                        xRatioToCoordinate(pathDataStream.readFloat()),
+                        yRatioToCoordinate(pathDataStream.readFloat())
+                    )
+                }
+                'M' -> {
+                    path.moveTo(
+                        xRatioToCoordinate(pathDataStream.readFloat()),
+                        yRatioToCoordinate(pathDataStream.readFloat())
+                    )
+                }
+                'Z' -> path.close()
+            }
+        }
+    }
 }
