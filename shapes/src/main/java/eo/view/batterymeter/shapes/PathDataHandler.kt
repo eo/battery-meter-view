@@ -19,6 +19,8 @@ class PathDataHandler : PathHandler {
     private var lastY = 0f
     private var lastX1 = 0f
     private var lastY1 = 0f
+    private var contourInitialX = 0f
+    private var contourInitialY = 0f
 
     override fun startPath() {
         commandList.clear()
@@ -27,6 +29,8 @@ class PathDataHandler : PathHandler {
         lastY = 0f
         lastX1 = 0f
         lastY1 = 0f
+        contourInitialX = 0f
+        contourInitialY = 0f
     }
 
     override fun endPath() {
@@ -60,6 +64,9 @@ class PathDataHandler : PathHandler {
     }
 
     override fun closePath() {
+        lastX = contourInitialX
+        lastY = contourInitialY
+
         addCommand('Z')
     }
 
@@ -173,12 +180,18 @@ class PathDataHandler : PathHandler {
         lastX = x
         lastY = y
 
+        contourInitialX = lastX
+        contourInitialY = lastY
+
         addCommand('M', lastX, lastY)
     }
 
     override fun movetoRel(x: Float, y: Float) {
         lastX += x
         lastY += y
+
+        contourInitialX = lastX
+        contourInitialY = lastY
 
         addCommand('M', lastX, lastY)
     }
