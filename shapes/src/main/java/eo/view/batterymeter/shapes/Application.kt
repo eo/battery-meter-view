@@ -12,7 +12,7 @@ const val OUTPUT_FILE_PREFIX = "battery_shapes"
 
 const val SVG_FILES_DIR = "svg"
 val themes = listOf("sharp", "rounded")
-val shapes = listOf("battery_shape", "alert_indicator", "charging_indicator")
+val shapes = listOf("battery_shape", "alert_indicator", "charging_indicator", "unknown_indicator")
 
 fun main(args: Array<String>) {
 

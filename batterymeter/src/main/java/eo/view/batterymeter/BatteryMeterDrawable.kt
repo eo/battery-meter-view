@@ -45,6 +45,7 @@ class BatteryMeterDrawable(
     private lateinit var batteryShapeDataStream: DataInputStream
     private lateinit var alertIndicatorDataStream: DataInputStream
     private lateinit var chargingIndicatorDataStream: DataInputStream
+    private lateinit var unknownIndicatorDataStream: DataInputStream
 
 
     private val batteryPaint = Paint().apply {
@@ -211,7 +212,7 @@ class BatteryMeterDrawable(
 
         indicatorPath.reset()
         if (currentLevel == null) {
-            // TODO: unknown indicator
+            performPathCommands(unknownIndicatorDataStream, indicatorPath)
         } else if (isCharging) {
             performPathCommands(chargingIndicatorDataStream, indicatorPath)
         } else if (currentCriticalLevel != null && currentLevel <= currentCriticalLevel) {
@@ -245,26 +246,34 @@ class BatteryMeterDrawable(
         DataInputStream(ByteArrayInputStream(rawBytes)).use { input ->
             val newAspectRatio = input.readFloat()
 
+            // battery shape
             var currentShapeLength = input.readInt()
             var currentOffset = rawBytes.size - input.available()
-
             batteryShapeDataStream = DataInputStream(
                 ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
             )
             input.skipBytes(currentShapeLength)
 
+            // alert indicator
             currentShapeLength = input.readInt()
             currentOffset = rawBytes.size - input.available()
-
             alertIndicatorDataStream = DataInputStream(
                 ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
             )
             input.skipBytes(currentShapeLength)
 
+            // charging indicator
             currentShapeLength = input.readInt()
             currentOffset = rawBytes.size - input.available()
-
             chargingIndicatorDataStream = DataInputStream(
+                ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
+            )
+            input.skipBytes(currentShapeLength)
+
+            // unknown indicator
+            currentShapeLength = input.readInt()
+            currentOffset = rawBytes.size - input.available()
+            unknownIndicatorDataStream = DataInputStream(
                 ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
             )
 
