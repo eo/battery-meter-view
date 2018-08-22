@@ -44,8 +44,8 @@ fun scaledPathCommands(pathCommands: List<PathCommand>, viewBox: ViewBox): List<
                 viewBox.height
             }
 
-            value / scale.toBigDecimal()
-        }.toTypedArray()
+            value / scale
+        }.toFloatArray()
 
         PathCommand(it.command, *parameters)
     }.toList()

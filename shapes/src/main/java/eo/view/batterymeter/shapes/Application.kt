@@ -29,12 +29,17 @@ fun main(args: Array<String>) {
             val pathData = extractPathData(svgElement)
             val pathCommands = parsePathData(pathData)
 
-            aspectRatio = viewBox.width.toFloat() / viewBox.height
+            aspectRatio = viewBox.width / viewBox.height
 
             scaledPathCommands(pathCommands, viewBox)
         }
 
         writeOutputFileForThemeShapes(outputFileName, aspectRatio, pathCommandsOfAllShapes)
+
+        pathCommandsOfAllShapes.forEach { pathCommands ->
+            pathCommands.forEach { println(it) }
+            println()
+        }
     }
 }
 
@@ -64,7 +69,7 @@ fun List<PathCommand>.toByteArray(): ByteArray {
         forEach { pathCommand ->
             out.writeChar(pathCommand.command.toInt())
             pathCommand.parameters.forEach {
-                out.writeFloat(it.toFloat())
+                out.writeFloat(it)
             }
         }
     }

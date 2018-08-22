@@ -1,7 +1,6 @@
 package eo.view.batterymeter.shapes
 
 import org.apache.batik.parser.PathHandler
-import java.math.BigDecimal
 
 /**
  * Handles path data parsing and generates a list of path commands.
@@ -16,18 +15,18 @@ class PathDataHandler : PathHandler {
 
     private val commandList = mutableListOf<PathCommand>()
 
-    private var lastX = BigDecimal.ZERO
-    private var lastY = BigDecimal.ZERO
-    private var lastX1 = BigDecimal.ZERO
-    private var lastY1 = BigDecimal.ZERO
+    private var lastX = 0f
+    private var lastY = 0f
+    private var lastX1 = 0f
+    private var lastY1 = 0f
 
     override fun startPath() {
         commandList.clear()
 
-        lastX = BigDecimal.ZERO
-        lastY = BigDecimal.ZERO
-        lastX1 = BigDecimal.ZERO
-        lastY1 = BigDecimal.ZERO
+        lastX = 0f
+        lastY = 0f
+        lastX1 = 0f
+        lastY1 = 0f
     }
 
     override fun endPath() {
@@ -65,49 +64,49 @@ class PathDataHandler : PathHandler {
     }
 
     override fun curvetoCubicAbs(x1: Float, y1: Float, x2: Float, y2: Float, x: Float, y: Float) {
-        lastX1 = x2.toBigDecimal()
-        lastY1 = y2.toBigDecimal()
-        lastX = x.toBigDecimal()
-        lastY = y.toBigDecimal()
+        lastX1 = x2
+        lastY1 = y2
+        lastX = x
+        lastY = y
 
-        addCommand('C', x1.toBigDecimal(), y1.toBigDecimal(), lastX1, lastY1, lastX, lastY)
+        addCommand('C', x1, y1, lastX1, lastY1, lastX, lastY)
     }
 
     override fun curvetoCubicRel(x1: Float, y1: Float, x2: Float, y2: Float, x: Float, y: Float) {
-        val absX1 = x1.toBigDecimal() + lastX
-        val absY1 = y1.toBigDecimal() + lastY
+        val absX1 = x1 + lastX
+        val absY1 = y1 + lastY
 
-        lastX1 = x2.toBigDecimal() + lastX
-        lastY1 = y2.toBigDecimal() + lastY
+        lastX1 = x2 + lastX
+        lastY1 = y2 + lastY
 
-        lastX += x.toBigDecimal()
-        lastY += y.toBigDecimal()
+        lastX += x
+        lastY += y
 
 
         addCommand('C', absX1, absY1, lastX1, lastY1, lastX, lastY)
     }
 
     override fun curvetoCubicSmoothAbs(x2: Float, y2: Float, x: Float, y: Float) {
-        val x1 = 2.toBigDecimal() * lastX - lastX1
-        val y1 = 2.toBigDecimal() * lastY - lastY1
+        val x1 = 2 * lastX - lastX1
+        val y1 = 2 * lastY - lastY1
 
-        lastX1 = x2.toBigDecimal()
-        lastY1 = y2.toBigDecimal()
-        lastX = x.toBigDecimal()
-        lastY = y.toBigDecimal()
+        lastX1 = x2
+        lastY1 = y2
+        lastX = x
+        lastY = y
 
         addCommand('C', x1, y1, lastX1, lastY1, lastX, lastY)
     }
 
     override fun curvetoCubicSmoothRel(x2: Float, y2: Float, x: Float, y: Float) {
-        val x1 = 2.toBigDecimal() * lastX - lastX1
-        val y1 = 2.toBigDecimal() * lastY - lastY1
+        val x1 = 2 * lastX - lastX1
+        val y1 = 2 * lastY - lastY1
 
-        lastX1 = x2.toBigDecimal() + lastX
-        lastY1 = y2.toBigDecimal() + lastY
+        lastX1 = x2 + lastX
+        lastY1 = y2 + lastY
 
-        lastX += x.toBigDecimal()
-        lastY += y.toBigDecimal()
+        lastX += x
+        lastY += y
 
         addCommand('C', x1, y1, lastX1, lastY1, lastX, lastY)
     }
@@ -133,58 +132,58 @@ class PathDataHandler : PathHandler {
     }
 
     override fun linetoAbs(x: Float, y: Float) {
-        lastX = x.toBigDecimal()
-        lastY = y.toBigDecimal()
+        lastX = x
+        lastY = y
 
         addCommand('L', lastX, lastY)
     }
 
     override fun linetoRel(x: Float, y: Float) {
-        lastX += x.toBigDecimal()
-        lastY += y.toBigDecimal()
+        lastX += x
+        lastY += y
 
         addCommand('L', lastX, lastY)
     }
 
     override fun linetoHorizontalAbs(x: Float) {
-        lastX = x.toBigDecimal()
+        lastX = x
 
         addCommand('L', lastX, lastY)
     }
 
     override fun linetoHorizontalRel(x: Float) {
-        lastX += x.toBigDecimal()
+        lastX += x
 
         addCommand('L', lastX, lastY)
     }
 
     override fun linetoVerticalAbs(y: Float) {
-        lastY = y.toBigDecimal()
+        lastY = y
 
         addCommand('L', lastX, lastY)
     }
 
     override fun linetoVerticalRel(y: Float) {
-        lastY += y.toBigDecimal()
+        lastY += y
 
         addCommand('L', lastX, lastY)
     }
 
     override fun movetoAbs(x: Float, y: Float) {
-        lastX = x.toBigDecimal()
-        lastY = y.toBigDecimal()
+        lastX = x
+        lastY = y
 
         addCommand('M', lastX, lastY)
     }
 
     override fun movetoRel(x: Float, y: Float) {
-        lastX += x.toBigDecimal()
-        lastY += y.toBigDecimal()
+        lastX += x
+        lastY += y
 
         addCommand('M', lastX, lastY)
     }
 
-    private fun addCommand(command: Char, vararg parameters: BigDecimal) {
+    private fun addCommand(command: Char, vararg parameters: Float) {
         commandList.add(PathCommand(command, *parameters))
     }
 

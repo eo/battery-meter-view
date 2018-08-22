@@ -1,12 +1,12 @@
 package eo.view.batterymeter.shapes
 
-data class ViewBox(val minX: Int, val minY: Int, val width: Int, val height: Int) {
+data class ViewBox(val minX: Float, val minY: Float, val width: Float, val height: Float) {
 
     companion object {
         fun fromString(str: String): ViewBox {
             val numbers = str.split(' ')
-                .map { it.toIntOrNull() ?: 0 }
-                .toIntArray()
+                .map { it.toFloatOrNull() ?: 0f }
+                .toFloatArray()
 
             if (numbers.size != 4) {
                 throw IllegalArgumentException("String must have 4 numbers separated by spaces")

@@ -8,6 +8,7 @@ import eo.view.batterymeter.util.getColorAttr
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 
+
 class BatteryMeterDrawable(
     private val context: Context,
     theme: BatteryMeter.Theme = BatteryMeter.Theme.SHARP
@@ -73,6 +74,7 @@ class BatteryMeterDrawable(
             if (value != field) {
                 field = value
                 loadThemeShapes()
+                updateBatteryAndIndicatorPaths()
                 invalidateSelf()
             }
         }
@@ -280,7 +282,6 @@ class BatteryMeterDrawable(
 
         path.reset()
         pathDataStream.reset()
-
 
         while (pathDataStream.available() > 0) {
             val command = pathDataStream.readChar()
