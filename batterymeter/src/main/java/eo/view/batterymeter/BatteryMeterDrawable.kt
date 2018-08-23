@@ -47,7 +47,6 @@ class BatteryMeterDrawable(
     private lateinit var chargingIndicatorDataStream: DataInputStream
     private lateinit var unknownIndicatorDataStream: DataInputStream
 
-
     private val batteryPaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
@@ -69,7 +68,6 @@ class BatteryMeterDrawable(
         color = Color.TRANSPARENT
     }
 
-
     override var theme = theme
         set(value) {
             if (value != field) {
@@ -85,7 +83,7 @@ class BatteryMeterDrawable(
             val newChargeLevel = value?.coerceIn(MINIMUM_CHARGE_LEVEL, MAXIMUM_CHARGE_LEVEL)
             if (newChargeLevel != field) {
                 field = newChargeLevel
-                updateChargeLevelPath()
+                updateBatteryAndIndicatorPaths()
                 invalidateSelf()
             }
         }
@@ -129,7 +127,6 @@ class BatteryMeterDrawable(
             invalidateSelf()
         }
 
-
     init {
         loadThemeShapes()
     }
@@ -167,7 +164,10 @@ class BatteryMeterDrawable(
     override fun draw(canvas: Canvas) {
         canvas.drawPath(batteryPath, batteryPaint)
         canvas.drawPath(chargeLevelPath, chargeLevelPaint)
-        canvas.drawPath(indicatorPath, indicatorPaint)
+
+        if (!indicatorPath.isEmpty) {
+            canvas.drawPath(indicatorPath, indicatorPaint)
+        }
     }
 
     override fun setAlpha(alpha: Int) {
@@ -218,7 +218,10 @@ class BatteryMeterDrawable(
         } else if (currentCriticalLevel != null && currentLevel <= currentCriticalLevel) {
             performPathCommands(alertIndicatorDataStream, indicatorPath)
         }
-        batteryPath.op(indicatorPath, Path.Op.DIFFERENCE)
+
+        if (!indicatorPath.isEmpty) {
+            batteryPath.op(indicatorPath, Path.Op.DIFFERENCE)
+        }
 
         updateChargeLevelPath()
     }

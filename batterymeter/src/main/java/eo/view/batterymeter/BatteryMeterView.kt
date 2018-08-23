@@ -16,29 +16,37 @@ class BatteryMeterView @JvmOverloads constructor(
     override var theme: BatteryMeter.Theme
         get() = batteryMeterDrawable.theme
         set(value) {
-            batteryMeterDrawable.theme = value
-            invalidate()
+            if (value != theme) {
+                batteryMeterDrawable.theme = value
+                invalidate()
+            }
         }
 
     override var chargeLevel: Int?
         get() = batteryMeterDrawable.chargeLevel
         set(value) {
-            batteryMeterDrawable.chargeLevel = value
-            invalidate()
+            if (value != chargeLevel) {
+                batteryMeterDrawable.chargeLevel = value
+                invalidate()
+            }
         }
 
     override var criticalChargeLevel: Int?
         get() = batteryMeterDrawable.criticalChargeLevel
         set(value) {
-            batteryMeterDrawable.criticalChargeLevel = value
-            invalidate()
+            if (value != criticalChargeLevel) {
+                batteryMeterDrawable.criticalChargeLevel = value
+                invalidate()
+            }
         }
 
     override var isCharging: Boolean
         get() = batteryMeterDrawable.isCharging
         set(value) {
-            batteryMeterDrawable.isCharging = value
-            invalidate()
+            if (value != isCharging) {
+                batteryMeterDrawable.isCharging = value
+                invalidate()
+            }
         }
 
     init {
