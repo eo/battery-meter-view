@@ -59,22 +59,22 @@ class BatteryMeterView @JvmOverloads constructor(
 
         val themes = BatteryMeter.Theme.values()
         val themeIndex = typedArray.getInt(
-            R.styleable.BatteryMeterView_battery_theme,
+            R.styleable.BatteryMeterView_batteryTheme,
             BatteryMeter.Theme.SHARP.ordinal
         ).coerceIn(0, themes.lastIndex)
 
         batteryMeterDrawable = BatteryMeterDrawable(context, themes[themeIndex])
 
-        if (typedArray.hasValue(R.styleable.BatteryMeterView_battery_chargeLevel)) {
-            chargeLevel = typedArray.getInt(R.styleable.BatteryMeterView_battery_chargeLevel, 0)
+        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryChargeLevel)) {
+            chargeLevel = typedArray.getInt(R.styleable.BatteryMeterView_batteryChargeLevel, 0)
         }
 
-        if (typedArray.hasValue(R.styleable.BatteryMeterView_battery_criticalChargeLevel)) {
+        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryCriticalChargeLevel)) {
             criticalChargeLevel = typedArray.getInt(
-                R.styleable.BatteryMeterView_battery_criticalChargeLevel, 0)
+                R.styleable.BatteryMeterView_batteryCriticalChargeLevel, 0)
         }
 
-        isCharging = typedArray.getBoolean(R.styleable.BatteryMeterView_battery_isCharging, isCharging)
+        isCharging = typedArray.getBoolean(R.styleable.BatteryMeterView_batteryIsCharging, isCharging)
 
         typedArray.recycle()
     }

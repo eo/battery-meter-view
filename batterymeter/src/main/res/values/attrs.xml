@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BatteryMeterView">
-        <attr name="battery_theme" format="enum">
+        <attr name="batteryTheme" format="enum">
             <enum name="rounded" value="0" />
             <enum name="sharp" value="1" />
         </attr>
 
-        <attr name="battery_chargeLevel" format="integer" />
-        <attr name="battery_criticalChargeLevel" format="integer" />
-        <attr name="battery_isCharging" format="boolean" />
+        <attr name="batteryChargeLevel" format="integer" />
+        <attr name="batteryCriticalChargeLevel" format="integer" />
+        <attr name="batteryIsCharging" format="boolean" />
     </declare-styleable>
 </resources>
