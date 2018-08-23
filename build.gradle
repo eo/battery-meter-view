@@ -15,14 +15,9 @@ buildscript {
             targetSdk  : latestSdk
     ]
 
-    final supportVersion = '1.0.0-rc01'
-
     final versions = [
             kotlin          : '1.2.61',
-            appcompat       : supportVersion,
-            annotation      : supportVersion,
-            material        : supportVersion,
-            ktx             : supportVersion,
+            support         : '1.0.0-rc01',
             constraintlayout: '2.0.0-alpha2',
             junit           : '4.12',
             atsl            : '1.1.0-alpha4', // Android Testing Support Library
@@ -32,10 +27,11 @@ buildscript {
     ext.deps = [
             kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
             kotlinStdLib      : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
-            appcompat         : "androidx.appcompat:appcompat:${versions.appcompat}",
-            material          : "com.google.android.material:material:${versions.material}",
-            annotation        : "androidx.annotation:annotation:${versions.annotation}",
-            ktx               : "androidx.core:core-ktx:${versions.ktx}",
+            appcompat         : "androidx.appcompat:appcompat:${versions.support}",
+            material          : "com.google.android.material:material:${versions.support}",
+            annotation        : "androidx.annotation:annotation:${versions.support}",
+            androidxCore      : "androidx.core:core:${versions.support}",
+            ktx               : "androidx.core:core-ktx:${versions.support}",
             constraintlayout  : "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}",
             junit             : "junit:junit:${versions.junit}",
             atsl              : "androidx.test:runner:${versions.atsl}",

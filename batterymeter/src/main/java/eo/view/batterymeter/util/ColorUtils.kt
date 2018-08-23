@@ -8,8 +8,8 @@ import androidx.annotation.ColorInt
 @ColorInt
 fun Context.getColorAttr(@AttrRes attr: Int): Int {
     val typedArray = obtainStyledAttributes(intArrayOf(attr))
-    val colorAccent = typedArray.getColor(0, 0)
+    val color = typedArray.getColor(0, 0)
     typedArray.recycle()
 
-    return colorAccent
+    return color
 }
