@@ -15,7 +15,7 @@ buildscript {
             targetSdk  : latestSdk
     ]
 
-    final supportVersion = '1.0.0-beta01'
+    final supportVersion = '1.0.0-rc01'
 
     final versions = [
             kotlin          : '1.2.61',
@@ -23,10 +23,10 @@ buildscript {
             annotation      : supportVersion,
             material        : supportVersion,
             ktx             : supportVersion,
-            constraintlayout: '2.0.0-alpha1',
+            constraintlayout: '2.0.0-alpha2',
             junit           : '4.12',
-            atsl            : '1.1.0-alpha3', // Android Testing Support Library
-            espresso        : '3.1.0-alpha3'
+            atsl            : '1.1.0-alpha4', // Android Testing Support Library
+            espresso        : '3.1.0-alpha4'
     ]
 
     ext.deps = [
@@ -48,7 +48,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0-alpha03'
+        classpath 'com.android.tools.build:gradle:3.3.0-alpha06'
         classpath deps.kotlinGradlePlugin
     }
 }
