@@ -27,9 +27,7 @@ class BatteryMeterDrawable(
     private val batteryShapeBounds = Rect()
     private val batteryPath = Path()
     private val indicatorPath = Path()
-    private val chargeLevelPath = Path()
     private val chargeLevelClipRect = RectF()
-    private val chargeLevelClipPath = Path()
 
     private val intrinsicSize =
         context.resources.getDimensionPixelSize(R.dimen.battery_meter_intrinsic_size)
@@ -163,7 +161,11 @@ class BatteryMeterDrawable(
 
     override fun draw(canvas: Canvas) {
         canvas.drawPath(batteryPath, batteryPaint)
-        canvas.drawPath(chargeLevelPath, chargeLevelPaint)
+
+        canvas.save()
+        canvas.clipRect(chargeLevelClipRect)
+        canvas.drawPath(batteryPath, chargeLevelPaint)
+        canvas.restore()
 
         if (!indicatorPath.isEmpty) {
             canvas.drawPath(indicatorPath, indicatorPaint)
@@ -231,12 +233,6 @@ class BatteryMeterDrawable(
         chargeLevelClipRect.set(batteryShapeBounds)
         chargeLevelClipRect.top +=
                 chargeLevelClipRect.height() * (1f - level.toFloat() / MAXIMUM_CHARGE_LEVEL)
-
-        chargeLevelClipPath.reset()
-        chargeLevelClipPath.addRect(chargeLevelClipRect, Path.Direction.CW)
-
-        chargeLevelPath.set(batteryPath)
-        chargeLevelPath.op(chargeLevelClipPath, Path.Op.INTERSECT)
     }
 
     private fun loadThemeShapes() {
