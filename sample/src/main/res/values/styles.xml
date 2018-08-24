@@ -1,6 +1,10 @@
 <resources>
 
-    <style name="Theme.BatteryMeter" parent="Theme.MaterialComponents.Light.DarkActionBar" />
+    <style name="Theme.BatteryMeter" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/secondary</item>
+    </style>
 
     <style name="Widget.BatteryMeter.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipStartPadding">12dp</item>
@@ -16,4 +20,5 @@
         <item name="android:textColor">@color/choice_chip_text</item>
         <item name="android:textAppearance">?attr/textAppearanceButton</item>
     </style>
+
 </resources>

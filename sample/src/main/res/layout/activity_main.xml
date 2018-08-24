@@ -24,7 +24,7 @@
         android:id="@+id/themeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/battery_theme"
         android:textAppearance="?attr/textAppearanceBody2"
         app:layout_constraintBottom_toTopOf="@id/themeChipGroup"
@@ -66,21 +66,22 @@
         android:id="@+id/chargeLevelCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:checked="true"
         android:text="@string/battery_charge_level"
         android:textAppearance="?attr/textAppearanceBody2"
         app:layout_constraintBottom_toTopOf="@id/chargeLevelSeekBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/themeChipGroup" />
+        app:layout_constraintTop_toBottomOf="@id/themeChipGroup"
+        app:layout_goneMarginBottom="16dp" />
 
     <SeekBar
         android:id="@+id/chargeLevelSeekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:max="100"
         app:layout_constraintBottom_toTopOf="@id/criticalChargeLevelCheckBox"
         app:layout_constraintEnd_toStartOf="@id/chargeLevelValueText"
@@ -99,11 +100,17 @@
         app:layout_constraintStart_toEndOf="@id/chargeLevelSeekBar"
         app:layout_constraintTop_toTopOf="@id/chargeLevelSeekBar" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/chargeLevelValueGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="chargeLevelSeekBar,chargeLevelValueText" />
+
     <CheckBox
         android:id="@+id/criticalChargeLevelCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:checked="true"
         android:text="@string/battery_critical_charge_level"
         android:textAppearance="?attr/textAppearanceBody2"
@@ -117,7 +124,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:max="100"
         app:layout_constraintBottom_toTopOf="@id/chargingCheckBox"
         app:layout_constraintEnd_toStartOf="@id/criticalChargeLevelValueText"
@@ -136,12 +143,17 @@
         app:layout_constraintStart_toEndOf="@id/criticalChargeLevelSeekBar"
         app:layout_constraintTop_toTopOf="@id/criticalChargeLevelSeekBar" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/criticalChargeLevelValueGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="criticalChargeLevelSeekBar,criticalChargeLevelValueText" />
+
     <CheckBox
         android:id="@+id/chargingCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_margin="16dp"
         android:text="@string/battery_charging"
         android:textAppearance="?attr/textAppearanceBody2"
         app:layout_constraintBottom_toBottomOf="parent"

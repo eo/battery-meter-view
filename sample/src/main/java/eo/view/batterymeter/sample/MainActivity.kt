@@ -42,7 +42,10 @@ class MainActivity : AppCompatActivity() {
                 null
             }
 
-            chargeLevelSeekBar.isVisible = isChecked
+            chargeLevelValueGroup.isVisible = isChecked
+            criticalChargeLevelCheckBox.isVisible = isChecked
+            criticalChargeLevelValueGroup.isVisible = isChecked
+            chargingCheckBox.isVisible = isChecked
         }
 
         chargeLevelSeekBar.progress = batteryMeter.chargeLevel ?: 0
@@ -73,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 null
             }
 
-            criticalChargeLevelSeekBar.isVisible = isChecked
+            criticalChargeLevelValueGroup.isVisible = isChecked
         }
 
         criticalChargeLevelSeekBar.progress = batteryMeter.criticalChargeLevel ?: 0
@@ -82,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         criticalChargeLevelSeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
-            
+
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 batteryMeter.criticalChargeLevel = progress
                 criticalChargeLevelValueText.text =
