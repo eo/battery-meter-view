@@ -51,7 +51,8 @@ class MainActivity : AppCompatActivity() {
 
             chargeLevelValueGroup.isVisible = isChecked
             criticalChargeLevelCheckBox.isVisible = isChecked
-            criticalChargeLevelValueGroup.isVisible = isChecked
+            criticalChargeLevelValueGroup.isVisible = isChecked &&
+                    criticalChargeLevelCheckBox.isChecked
             chargingCheckBox.isVisible = isChecked
         }
 

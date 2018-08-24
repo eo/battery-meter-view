@@ -164,10 +164,12 @@ class BatteryMeterDrawable(
     override fun draw(canvas: Canvas) {
         canvas.drawPath(batteryPath, batteryPaint)
 
-        canvas.save()
-        canvas.clipRect(chargeLevelClipRect)
-        canvas.drawPath(batteryPath, chargeLevelPaint)
-        canvas.restore()
+        if (!chargeLevelClipRect.isEmpty) {
+            canvas.save()
+            canvas.clipRect(chargeLevelClipRect)
+            canvas.drawPath(batteryPath, chargeLevelPaint)
+            canvas.restore()
+        }
 
         if (!indicatorPath.isEmpty) {
             canvas.drawPath(indicatorPath, indicatorPaint)
@@ -215,13 +217,14 @@ class BatteryMeterDrawable(
 
         performPathCommands(batteryShapeDataStream, batteryPath)
 
-        indicatorPath.reset()
         if (currentLevel == null) {
             performPathCommands(unknownIndicatorDataStream, indicatorPath)
         } else if (isCharging) {
             performPathCommands(chargingIndicatorDataStream, indicatorPath)
         } else if (currentCriticalLevel != null && currentLevel <= currentCriticalLevel) {
             performPathCommands(alertIndicatorDataStream, indicatorPath)
+        } else {
+            indicatorPath.reset()
         }
 
         if (!indicatorPath.isEmpty) {
