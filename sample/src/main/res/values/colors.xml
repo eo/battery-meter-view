@@ -9,4 +9,6 @@
     <color name="secondaryDark">#004c8c</color>
     <color name="primaryText">#000000</color>
     <color name="secondaryText">#ffffff</color>
+
+    <color name="launcher_background">@color/secondary</color>
 </resources>
