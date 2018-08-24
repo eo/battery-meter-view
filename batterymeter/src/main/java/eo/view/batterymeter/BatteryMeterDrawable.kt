@@ -82,6 +82,7 @@ class BatteryMeterDrawable(
             if (newChargeLevel != field) {
                 field = newChargeLevel
                 updateBatteryAndIndicatorPaths()
+                updateChargeLevelClipRect()
                 invalidateSelf()
             }
         }
@@ -97,8 +98,9 @@ class BatteryMeterDrawable(
 
     override var criticalChargeLevel: Int? = CRITICAL_CHARGE_LEVEL
         set(value) {
-            if (value != field) {
-                field = value
+            val newCriticalChargeLevel = value?.coerceIn(MINIMUM_CHARGE_LEVEL, MAXIMUM_CHARGE_LEVEL)
+            if (newCriticalChargeLevel != field) {
+                field = newCriticalChargeLevel
                 updateBatteryAndIndicatorPaths()
                 invalidateSelf()
             }
@@ -204,6 +206,7 @@ class BatteryMeterDrawable(
         )
 
         updateBatteryAndIndicatorPaths()
+        updateChargeLevelClipRect()
     }
 
     private fun updateBatteryAndIndicatorPaths() {
@@ -224,11 +227,9 @@ class BatteryMeterDrawable(
         if (!indicatorPath.isEmpty) {
             batteryPath.op(indicatorPath, Path.Op.DIFFERENCE)
         }
-
-        updateChargeLevelPath()
     }
 
-    private fun updateChargeLevelPath() {
+    private fun updateChargeLevelClipRect() {
         val level = chargeLevel ?: MINIMUM_CHARGE_LEVEL
         chargeLevelClipRect.set(batteryShapeBounds)
         chargeLevelClipRect.top +=
