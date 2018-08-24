@@ -27,9 +27,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         themeChipGroup.setOnCheckedChangeListener { _, chipId ->
-            batteryMeter.theme = when (chipId) {
-                R.id.roundedThemeChip -> BatteryMeter.Theme.ROUNDED
-                else -> BatteryMeter.Theme.SHARP
+            when (chipId) {
+                R.id.roundedThemeChip -> batteryMeter.theme = BatteryMeter.Theme.ROUNDED
+                R.id.sharpThemeChip -> batteryMeter.theme = BatteryMeter.Theme.SHARP
+                else -> {
+                    if (batteryMeter.theme == BatteryMeter.Theme.ROUNDED) {
+                        roundedThemeChip.isChecked = true
+                    } else {
+                        sharpThemeChip.isChecked = true
+                    }
+                }
             }
         }
     }

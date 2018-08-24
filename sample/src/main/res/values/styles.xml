@@ -3,7 +3,7 @@
     <style name="Theme.BatteryMeter" parent="Theme.MaterialComponents.Light">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
-        <item name="colorAccent">@color/secondary</item>
+        <item name="colorAccent">@color/accent</item>
     </style>
 
     <style name="Widget.BatteryMeter.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
@@ -15,7 +15,7 @@
         <item name="chipCornerRadius">4dp</item>
         <item name="chipMinHeight">36dp</item>
         <item name="chipStrokeColor">@color/choice_chip_stroke</item>
-        <item name="chipBackgroundColor">@color/choice_chip_background</item>
+        <item name="chipBackgroundColor">?android:attr/windowBackground</item>
         <item name="chipIconTint">@color/choice_chip_text</item>
         <item name="android:textColor">@color/choice_chip_text</item>
         <item name="android:textAppearance">?attr/textAppearanceButton</item>
