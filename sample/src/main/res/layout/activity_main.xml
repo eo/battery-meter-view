@@ -7,40 +7,74 @@
     android:animateLayoutChanges="true"
     tools:context=".MainActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="16dp" />
+
     <eo.view.batterymeter.BatteryMeterView
         android:id="@+id/batteryMeter"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="24dp"
         app:batteryChargeLevel="50"
         app:batteryTheme="rounded"
-        app:layout_constraintBottom_toTopOf="@id/themeTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toTopOf="@id/topGuideline"
+        app:layout_constraintBottom_toTopOf="@id/optionsTopBarrier"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/optionsTopBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="themeTitle" />
 
     <TextView
         android:id="@+id/themeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/battery_theme"
         android:textAppearance="?attr/textAppearanceBody2"
         app:layout_constraintBottom_toTopOf="@id/themeChipGroup"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/batteryMeter" />
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@id/optionsTopBarrier" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/themeChipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:checkedChip="@id/roundedThemeChip"
         app:chipSpacing="12dp"
         app:layout_constraintBottom_toTopOf="@id/chargeLevelCheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/themeTitle"
         app:singleSelection="true">
 
@@ -71,21 +105,18 @@
         android:text="@string/battery_charge_level"
         android:textAppearance="?attr/textAppearanceBody2"
         app:layout_constraintBottom_toTopOf="@id/chargeLevelSeekBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/themeChipGroup"
-        app:layout_goneMarginBottom="16dp" />
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@id/themeChipGroup" />
 
     <SeekBar
         android:id="@+id/chargeLevelSeekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:max="100"
         app:layout_constraintBottom_toTopOf="@id/criticalChargeLevelCheckBox"
         app:layout_constraintEnd_toStartOf="@id/chargeLevelValueText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/chargeLevelCheckBox" />
 
     <TextView
@@ -93,10 +124,9 @@
         android:layout_width="36dp"
         android:layout_height="0dp"
         android:layout_marginStart="2dp"
-        android:layout_marginEnd="16dp"
         android:gravity="center_vertical|end"
         app:layout_constraintBottom_toBottomOf="@id/chargeLevelSeekBar"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toEndOf="@id/chargeLevelSeekBar"
         app:layout_constraintTop_toTopOf="@id/chargeLevelSeekBar" />
 
@@ -115,20 +145,18 @@
         android:text="@string/battery_critical_charge_level"
         android:textAppearance="?attr/textAppearanceBody2"
         app:layout_constraintBottom_toTopOf="@id/criticalChargeLevelSeekBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/chargeLevelSeekBar" />
 
     <SeekBar
         android:id="@+id/criticalChargeLevelSeekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:max="100"
         app:layout_constraintBottom_toTopOf="@id/chargingCheckBox"
         app:layout_constraintEnd_toStartOf="@id/criticalChargeLevelValueText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/criticalChargeLevelCheckBox" />
 
     <TextView
@@ -136,10 +164,9 @@
         android:layout_width="36dp"
         android:layout_height="0dp"
         android:layout_marginStart="2dp"
-        android:layout_marginEnd="16dp"
         android:gravity="center_vertical|end"
         app:layout_constraintBottom_toBottomOf="@id/criticalChargeLevelSeekBar"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toEndOf="@id/criticalChargeLevelSeekBar"
         app:layout_constraintTop_toTopOf="@id/criticalChargeLevelSeekBar" />
 
@@ -153,12 +180,12 @@
         android:id="@+id/chargingCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/battery_charging"
         android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/criticalChargeLevelSeekBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
