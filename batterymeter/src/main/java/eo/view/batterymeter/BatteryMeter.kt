@@ -15,4 +15,12 @@ interface BatteryMeter {
 
     var isCharging: Boolean
 
+    var color: Int
+
+    var indicatorColor: Int
+
+    var criticalColor: Int?
+
+    var unknownColor: Int?
+
 }

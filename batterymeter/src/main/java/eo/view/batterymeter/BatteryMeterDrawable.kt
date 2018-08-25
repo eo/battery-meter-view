@@ -45,19 +45,12 @@ class BatteryMeterDrawable(
     private lateinit var chargingIndicatorDataStream: DataInputStream
     private lateinit var unknownIndicatorDataStream: DataInputStream
 
-    private val batteryPaint = Paint().apply {
-        isAntiAlias = true
+    private val batteryPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = ColorUtils.setAlphaComponent(
-            context.getColorAttr(android.R.attr.colorForeground),
-            BATTERY_COLOR_ALPHA
-        )
     }
 
-    private val chargeLevelPaint = Paint().apply {
-        isAntiAlias = true
+    private val chargeLevelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = context.getColorAttr(android.R.attr.colorForeground)
     }
 
     private val indicatorPaint = Paint().apply {
@@ -83,6 +76,7 @@ class BatteryMeterDrawable(
                 field = newChargeLevel
                 updateBatteryAndIndicatorPaths()
                 updateChargeLevelClipRect()
+                updatePaintColors()
                 invalidateSelf()
             }
         }
@@ -92,6 +86,7 @@ class BatteryMeterDrawable(
             if (value != field) {
                 field = value
                 updateBatteryAndIndicatorPaths()
+                updatePaintColors()
                 invalidateSelf()
             }
         }
@@ -102,25 +97,39 @@ class BatteryMeterDrawable(
             if (newCriticalChargeLevel != field) {
                 field = newCriticalChargeLevel
                 updateBatteryAndIndicatorPaths()
+                updatePaintColors()
                 invalidateSelf()
             }
         }
 
-    var batteryColor: Int
-        get() = batteryPaint.color
+    override var color: Int = context.getColorAttr(android.R.attr.colorForeground)
         set(value) {
-            batteryPaint.color = value
-            invalidateSelf()
+            if (value != field) {
+                field = value
+                updatePaintColors()
+                invalidateSelf()
+            }
         }
 
-    var chargeLevelColor: Int
-        get() = chargeLevelPaint.color
+    override var criticalColor: Int? = null
         set(value) {
-            chargeLevelPaint.color = value
-            invalidateSelf()
+            if (value != field) {
+                field = value
+                updatePaintColors()
+                invalidateSelf()
+            }
         }
 
-    var indicatorColor: Int
+    override var unknownColor: Int? = null
+        set(value) {
+            if (value != field) {
+                field = value
+                updatePaintColors()
+                invalidateSelf()
+            }
+        }
+
+    override var indicatorColor: Int
         get() = indicatorPaint.color
         set(value) {
             indicatorPaint.color = value
@@ -237,6 +246,25 @@ class BatteryMeterDrawable(
         chargeLevelClipRect.set(batteryShapeBounds)
         chargeLevelClipRect.top +=
                 chargeLevelClipRect.height() * (1f - level.toFloat() / MAXIMUM_CHARGE_LEVEL)
+    }
+
+    private fun updatePaintColors() {
+        val currentLevel = chargeLevel
+        val currentCriticalLevel = criticalChargeLevel
+
+        chargeLevelPaint.color = color
+        batteryPaint.color = ColorUtils.setAlphaComponent(color, BATTERY_COLOR_ALPHA)
+
+        if (currentLevel == null) {
+            unknownColor?.let {
+                batteryPaint.color = it
+            }
+        } else if (!isCharging && currentCriticalLevel != null && currentLevel <= currentCriticalLevel) {
+            criticalColor?.let {
+                chargeLevelPaint.color = it
+                batteryPaint.color = ColorUtils.setAlphaComponent(it, BATTERY_COLOR_ALPHA)
+            }
+        }
     }
 
     private fun loadThemeShapes() {
