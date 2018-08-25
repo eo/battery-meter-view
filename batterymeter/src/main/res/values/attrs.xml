@@ -11,6 +11,7 @@
         <attr name="batteryIsCharging" format="boolean" />
 
         <attr name="batteryColor" format="color" />
+        <attr name="batteryChargingColor" format="color" />
         <attr name="batteryCriticalColor" format="color" />
         <attr name="batteryUnknownColor" format="color" />
         <attr name="batteryIndicatorColor" format="color" />

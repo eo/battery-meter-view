@@ -67,6 +67,15 @@ class BatteryMeterView @JvmOverloads constructor(
             }
         }
 
+    override var chargingColor: Int?
+        get() = batteryMeterDrawable.chargingColor
+        set(value) {
+            if (value != chargingColor) {
+                batteryMeterDrawable.chargingColor = value
+                invalidate()
+            }
+        }
+
     override var criticalColor: Int?
         get() = batteryMeterDrawable.criticalColor
         set(value) {
@@ -120,6 +129,11 @@ class BatteryMeterView @JvmOverloads constructor(
             R.styleable.BatteryMeterView_batteryIndicatorColor,
             indicatorColor
         )
+
+        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryChargingColor)) {
+            chargingColor =
+                    typedArray.getColor(R.styleable.BatteryMeterView_batteryChargingColor, color)
+        }
 
         if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryCriticalColor)) {
             criticalColor =

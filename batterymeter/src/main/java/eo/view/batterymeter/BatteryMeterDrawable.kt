@@ -111,6 +111,15 @@ class BatteryMeterDrawable(
             }
         }
 
+    override var chargingColor: Int? = null
+        set(value) {
+            if (value != field) {
+                field = value
+                updatePaintColors()
+                invalidateSelf()
+            }
+        }
+
     override var criticalColor: Int? = null
         set(value) {
             if (value != field) {
@@ -259,7 +268,12 @@ class BatteryMeterDrawable(
             unknownColor?.let {
                 batteryPaint.color = it
             }
-        } else if (!isCharging && currentCriticalLevel != null && currentLevel <= currentCriticalLevel) {
+        } else if (isCharging) {
+            chargingColor?.let {
+                chargeLevelPaint.color = it
+                batteryPaint.color = ColorUtils.setAlphaComponent(it, BATTERY_COLOR_ALPHA)
+            }
+        } else if (currentCriticalLevel != null && currentLevel <= currentCriticalLevel) {
             criticalColor?.let {
                 chargeLevelPaint.color = it
                 batteryPaint.color = ColorUtils.setAlphaComponent(it, BATTERY_COLOR_ALPHA)
