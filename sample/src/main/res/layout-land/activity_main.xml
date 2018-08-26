@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
@@ -40,18 +41,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5"/>
+        app:layout_constraintGuide_percent="0.5" />
 
     <eo.view.batterymeter.BatteryMeterView
         android:id="@+id/batteryMeter"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:batteryChargeLevel="50"
-        app:batteryTheme="rounded"
+        app:batteryColor="?colorAccent"
+        app:batteryCriticalColor="?colorError"
+        app:layout_constraintBottom_toTopOf="@id/bottomGuideline"
         app:layout_constraintEnd_toStartOf="@id/optionsStartGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintTop_toTopOf="@id/topGuideline"
-        app:layout_constraintBottom_toTopOf="@id/bottomGuideline"/>
+        app:layout_constraintTop_toTopOf="@id/topGuideline" />
 
     <TextView
         android:id="@+id/themeTitle"
@@ -64,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toStartOf="@id/optionsStartGuideline"
         app:layout_constraintTop_toTopOf="@id/topGuideline"
-        app:layout_constraintVertical_chainStyle="packed"/>
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/themeChipGroup"
@@ -155,7 +156,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:max="100"
-        app:layout_constraintBottom_toTopOf="@id/chargingCheckBox"
+        app:layout_constraintBottom_toTopOf="@id/heightSpinner"
         app:layout_constraintEnd_toStartOf="@id/criticalChargeLevelValueText"
         app:layout_constraintStart_toStartOf="@id/optionsStartGuideline"
         app:layout_constraintTop_toBottomOf="@id/criticalChargeLevelCheckBox" />
@@ -181,12 +182,46 @@
         android:id="@+id/chargingCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="48dp"
         android:text="@string/battery_charging"
         android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/heightSpinner"
+        app:layout_constraintEnd_toStartOf="@id/heightLabel"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@id/optionsStartGuideline"
+        app:layout_constraintTop_toTopOf="@id/heightSpinner" />
+
+    <TextView
+        android:id="@+id/heightLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/battery_height"
+        android:textAppearance="?attr/textAppearanceBody2"
+        app:layout_constraintBottom_toBottomOf="@id/chargingCheckBox"
+        app:layout_constraintEnd_toStartOf="@id/heightSpinner"
+        app:layout_constraintStart_toEndOf="@id/chargingCheckBox"
+        app:layout_constraintTop_toTopOf="@id/chargingCheckBox" />
+
+    <Spinner
+        android:id="@+id/heightSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        app:layout_constraintEnd_toStartOf="@id/heightUnit"
+        app:layout_constraintStart_toEndOf="@id/heightLabel"
         app:layout_constraintTop_toBottomOf="@id/criticalChargeLevelSeekBar" />
+
+    <TextView
+        android:id="@+id/heightUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/battery_height_unit"
+        android:textAppearance="?attr/textAppearanceBody2"
+        app:layout_constraintBottom_toBottomOf="@id/heightSpinner"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toEndOf="@id/heightSpinner"
+        app:layout_constraintTop_toTopOf="@id/heightSpinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

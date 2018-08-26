@@ -1,11 +1,17 @@
 package eo.view.batterymeter.sample
 
+import android.content.res.Resources
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import eo.view.batterymeter.BatteryMeter
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,10 +19,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setupBatteryMeter()
         setupThemeSwitcher()
         setupChargeLevelControls()
         setupCriticalChargeLevelControls()
         setupChargingCheckBox()
+
+        constraintLayout.doOnLayout { _ ->
+            setupHeightSpinner()
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        // no-op
+    }
+
+    private fun setupBatteryMeter() {
+        with(batteryMeter) {
+            theme = BatteryMeter.Theme.ROUNDED
+            chargeLevel = 70
+            criticalChargeLevel = 15
+            isCharging = true
+        }
     }
 
     private fun setupThemeSwitcher() {
@@ -115,6 +139,36 @@ class MainActivity : AppCompatActivity() {
 
         chargingCheckBox.setOnCheckedChangeListener { _, isCharging ->
             batteryMeter.isCharging = isCharging
+        }
+    }
+
+    private fun setupHeightSpinner() {
+        fun dpToPx(dp: Int): Int {
+            return (dp * Resources.getSystem().displayMetrics.density).toInt()
+        }
+
+        fun pxToDp(px: Int): Int {
+            return (px / Resources.getSystem().displayMetrics.density).toInt()
+        }
+
+        val currentHeight = pxToDp(batteryMeter.height)
+        val heights = (20..currentHeight step 10).toList()
+        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, heights)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        heightSpinner.adapter = arrayAdapter
+        heightSpinner.setSelection(heights.lastIndex)
+
+        heightSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+                val batteryMeterLayoutParams = batteryMeter.layoutParams
+                batteryMeterLayoutParams.height = dpToPx(heights[pos])
+                batteryMeter.layoutParams = batteryMeterLayoutParams
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // no-op
+            }
         }
     }
 }

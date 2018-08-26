@@ -4,10 +4,10 @@
     <string name="battery_theme">Theme</string>
     <string name="battery_theme_rounded">Rounded</string>
     <string name="battery_theme_sharp">Sharp</string>
-
     <string name="battery_charge_level">Charge Level</string>
     <string name="battery_critical_charge_level">Critical Charge Level</string>
     <string name="battery_charge_level_value">%1$d%%</string>
-
     <string name="battery_charging">Charging</string>
+    <string name="battery_height">Height</string>
+    <string name="battery_height_unit">dp</string>
 </resources>
