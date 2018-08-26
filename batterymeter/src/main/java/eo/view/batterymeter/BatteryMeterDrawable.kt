@@ -153,13 +153,13 @@ class BatteryMeterDrawable(
         (intrinsicSize * aspectRatio).toInt()
     } else {
         intrinsicSize
-    }
+    } + padding.left + padding.right
 
     override fun getIntrinsicHeight() = if (aspectRatio < 1) {
         intrinsicSize
     } else {
         (intrinsicSize / aspectRatio).toInt()
-    }
+    } + padding.top + padding.bottom
 
     override fun getPadding(padding: Rect): Boolean {
         if (padding.left == 0 && padding.top == 0 && padding.right == 0 && padding.bottom == 0) {
@@ -221,8 +221,8 @@ class BatteryMeterDrawable(
         }
 
         batteryShapeBounds.offset(
-            (availableWidth - batteryShapeBounds.width()) / 2,
-            (availableHeight - batteryShapeBounds.height()) / 2
+            padding.left + (availableWidth - batteryShapeBounds.width()) / 2,
+            padding.top + (availableHeight - batteryShapeBounds.height()) / 2
         )
 
         updateBatteryAndIndicatorPaths()

@@ -146,6 +146,8 @@ class BatteryMeterView @JvmOverloads constructor(
         }
 
         typedArray.recycle()
+
+        batteryMeterDrawable.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
     }
 
     override fun draw(canvas: Canvas) {
@@ -157,6 +159,21 @@ class BatteryMeterView @JvmOverloads constructor(
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        batteryMeterDrawable.setBounds(left, top, right, bottom);
+        batteryMeterDrawable.setBounds(left, top, right, bottom)
+    }
+
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        super.setPadding(left, top, right, bottom)
+
+        batteryMeterDrawable.setPadding(left, top, right, bottom)
+    }
+
+    override fun setPaddingRelative(start: Int, top: Int, end: Int, bottom: Int) {
+        super.setPaddingRelative(start, top, end, bottom)
+
+        when (layoutDirection) {
+            LAYOUT_DIRECTION_RTL -> batteryMeterDrawable.setPadding(end, top, start, bottom)
+            else -> batteryMeterDrawable.setPadding(start, top, end, bottom)
+        }
     }
 }
