@@ -4,7 +4,9 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.ColorUtils
+import eo.view.batterymeter.util.clipOutPathCompat
 import eo.view.batterymeter.util.getColorAttr
+import eo.view.batterymeter.util.withSave
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 
@@ -64,7 +66,8 @@ class BatteryMeterDrawable(
             if (value != field) {
                 field = value
                 loadThemeShapes()
-                updateBatteryAndIndicatorPaths()
+                updateBatteryPath()
+                updateIndicatorPath()
                 invalidateSelf()
             }
         }
@@ -74,7 +77,7 @@ class BatteryMeterDrawable(
             val newChargeLevel = value?.coerceIn(MINIMUM_CHARGE_LEVEL, MAXIMUM_CHARGE_LEVEL)
             if (newChargeLevel != field) {
                 field = newChargeLevel
-                updateBatteryAndIndicatorPaths()
+                updateIndicatorPath()
                 updateChargeLevelClipRect()
                 updatePaintColors()
                 invalidateSelf()
@@ -85,7 +88,7 @@ class BatteryMeterDrawable(
         set(value) {
             if (value != field) {
                 field = value
-                updateBatteryAndIndicatorPaths()
+                updateIndicatorPath()
                 updatePaintColors()
                 invalidateSelf()
             }
@@ -96,7 +99,7 @@ class BatteryMeterDrawable(
             val newCriticalChargeLevel = value?.coerceIn(MINIMUM_CHARGE_LEVEL, MAXIMUM_CHARGE_LEVEL)
             if (newCriticalChargeLevel != field) {
                 field = newCriticalChargeLevel
-                updateBatteryAndIndicatorPaths()
+                updateIndicatorPath()
                 updatePaintColors()
                 invalidateSelf()
             }
@@ -180,17 +183,23 @@ class BatteryMeterDrawable(
     }
 
     override fun draw(canvas: Canvas) {
-        canvas.drawPath(batteryPath, batteryPaint)
+        canvas.withSave {
+            if (!indicatorPath.isEmpty) {
+                clipOutPathCompat(indicatorPath)
+            }
 
-        if (!chargeLevelClipRect.isEmpty) {
-            canvas.save()
-            canvas.clipRect(chargeLevelClipRect)
-            canvas.drawPath(batteryPath, chargeLevelPaint)
-            canvas.restore()
-        }
+            drawPath(batteryPath, batteryPaint)
 
-        if (!indicatorPath.isEmpty) {
-            canvas.drawPath(indicatorPath, indicatorPaint)
+            if (!chargeLevelClipRect.isEmpty) {
+                withSave {
+                    clipRect(chargeLevelClipRect)
+                    drawPath(batteryPath, chargeLevelPaint)
+                }
+            }
+
+            if (!indicatorPath.isEmpty) {
+                drawPath(indicatorPath, indicatorPaint)
+            }
         }
     }
 
@@ -225,15 +234,18 @@ class BatteryMeterDrawable(
             padding.top + (availableHeight - batteryShapeBounds.height()) / 2
         )
 
-        updateBatteryAndIndicatorPaths()
+        updateBatteryPath()
+        updateIndicatorPath()
         updateChargeLevelClipRect()
     }
 
-    private fun updateBatteryAndIndicatorPaths() {
+    private fun updateBatteryPath() {
+        performPathCommands(batteryShapeDataStream, batteryPath)
+    }
+
+    private fun updateIndicatorPath() {
         val currentLevel = chargeLevel
         val currentCriticalLevel = criticalChargeLevel
-
-        performPathCommands(batteryShapeDataStream, batteryPath)
 
         if (currentLevel == null) {
             performPathCommands(unknownIndicatorDataStream, indicatorPath)
@@ -243,10 +255,6 @@ class BatteryMeterDrawable(
             performPathCommands(alertIndicatorDataStream, indicatorPath)
         } else {
             indicatorPath.reset()
-        }
-
-        if (!indicatorPath.isEmpty) {
-            batteryPath.op(indicatorPath, Path.Op.DIFFERENCE)
         }
     }
 
