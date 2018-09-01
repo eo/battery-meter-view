@@ -201,7 +201,7 @@ class BatteryMeterDrawable(
         return PixelFormat.TRANSLUCENT
     }
 
-    override fun setColorFilter(colorFilter: ColorFilter) {
+    override fun setColorFilter(colorFilter: ColorFilter?) {
         batteryPaint.colorFilter = colorFilter
         chargeLevelPaint.colorFilter = colorFilter
         indicatorPaint.colorFilter = colorFilter
@@ -341,28 +341,22 @@ class BatteryMeterDrawable(
             val command = pathDataStream.readChar()
 
             when (command) {
-                'C' -> {
-                    path.cubicTo(
-                        xRatioToCoordinate(pathDataStream.readFloat()),
-                        yRatioToCoordinate(pathDataStream.readFloat()),
-                        xRatioToCoordinate(pathDataStream.readFloat()),
-                        yRatioToCoordinate(pathDataStream.readFloat()),
-                        xRatioToCoordinate(pathDataStream.readFloat()),
-                        yRatioToCoordinate(pathDataStream.readFloat())
-                    )
-                }
-                'L' -> {
-                    path.lineTo(
-                        xRatioToCoordinate(pathDataStream.readFloat()),
-                        yRatioToCoordinate(pathDataStream.readFloat())
-                    )
-                }
-                'M' -> {
-                    path.moveTo(
-                        xRatioToCoordinate(pathDataStream.readFloat()),
-                        yRatioToCoordinate(pathDataStream.readFloat())
-                    )
-                }
+                'C' -> path.cubicTo(
+                    xRatioToCoordinate(pathDataStream.readFloat()),
+                    yRatioToCoordinate(pathDataStream.readFloat()),
+                    xRatioToCoordinate(pathDataStream.readFloat()),
+                    yRatioToCoordinate(pathDataStream.readFloat()),
+                    xRatioToCoordinate(pathDataStream.readFloat()),
+                    yRatioToCoordinate(pathDataStream.readFloat())
+                )
+                'L' -> path.lineTo(
+                    xRatioToCoordinate(pathDataStream.readFloat()),
+                    yRatioToCoordinate(pathDataStream.readFloat())
+                )
+                'M' -> path.moveTo(
+                    xRatioToCoordinate(pathDataStream.readFloat()),
+                    yRatioToCoordinate(pathDataStream.readFloat())
+                )
                 'Z' -> path.close()
             }
         }
