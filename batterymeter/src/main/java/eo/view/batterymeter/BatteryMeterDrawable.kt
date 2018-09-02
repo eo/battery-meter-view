@@ -273,9 +273,7 @@ class BatteryMeterDrawable(
         batteryPaint.color = ColorUtils.setAlphaComponent(color, BATTERY_COLOR_ALPHA)
 
         if (currentLevel == null) {
-            unknownColor?.let {
-                batteryPaint.color = it
-            }
+            batteryPaint.color = unknownColor ?: color
         } else if (isCharging) {
             chargingColor?.let {
                 chargeLevelPaint.color = it
