@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_colors"
+        android:icon="@drawable/ic_color_palette"
+        android:title="@string/battery_colors"
+        app:showAsAction="ifRoom">
+
+        <menu>
+            <item
+                android:id="@+id/menu_default_color"
+                android:title="@string/battery_colors_default_color" />
+
+            <item
+                android:id="@+id/menu_charging_color"
+                android:title="@string/battery_colors_charging_color" />
+
+            <item
+                android:id="@+id/menu_critical_color"
+                android:title="@string/battery_colors_critical_color" />
+
+            <item
+                android:id="@+id/menu_unknown_color"
+                android:title="@string/battery_colors_unknown_color" />
+
+            <item
+                android:id="@+id/menu_indicator_color"
+                android:title="@string/battery_colors_indicator_color" />
+        </menu>
+
+    </item>
+
+</menu>

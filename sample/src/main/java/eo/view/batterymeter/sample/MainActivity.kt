@@ -1,15 +1,21 @@
 package eo.view.batterymeter.sample
 
-import android.content.res.Resources
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
+import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import eo.view.batterymeter.BatteryMeter
+import eo.view.batterymeter.BatteryMeterDrawable
+import eo.view.batterymeter.sample.util.dpToPx
+import eo.view.batterymeter.sample.util.pxToDp
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -32,6 +38,91 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         // no-op
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.activity_main, menu)
+
+        val iconPadding = Rect(
+            dpToPx(7f).toInt(), dpToPx(2f).toInt(),
+            dpToPx(7f).toInt(), dpToPx(2f).toInt()
+        )
+
+        menu.findItem(R.id.menu_colors).subMenu.forEach { colorMenuItem ->
+            if (colorMenuItem.itemId == R.id.menu_indicator_color) return@forEach
+
+            val iconDrawable = BatteryMeterDrawable(this).apply {
+                setPadding(iconPadding.left, iconPadding.top, iconPadding.right, iconPadding.bottom)
+            }
+
+            when (colorMenuItem.itemId) {
+                R.id.menu_default_color -> {
+                    iconDrawable.chargeLevel = 60
+                }
+                R.id.menu_charging_color -> {
+                    iconDrawable.chargeLevel = 70
+                    iconDrawable.isCharging = true
+                }
+                R.id.menu_critical_color -> {
+                    iconDrawable.chargeLevel = iconDrawable.criticalChargeLevel
+                }
+                R.id.menu_unknown_color -> {
+                    iconDrawable.chargeLevel = null
+                }
+            }
+
+            colorMenuItem.icon = iconDrawable
+        }
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.menu_colors -> {
+            item.subMenu.forEach { colorMenuItem ->
+                (colorMenuItem.icon as? BatteryMeterDrawable)?.let { batteryMeterDrawable ->
+                    batteryMeterDrawable.theme = batteryMeter.theme
+
+                    when (colorMenuItem.itemId) {
+                        R.id.menu_default_color -> {
+                            batteryMeterDrawable.color = batteryMeter.color
+                        }
+                        R.id.menu_charging_color -> {
+                            batteryMeterDrawable.chargingColor = batteryMeter.chargingColor ?:
+                                    batteryMeter.color
+                        }
+                        R.id.menu_critical_color -> {
+                            batteryMeterDrawable.criticalColor = batteryMeter.criticalColor ?:
+                                    batteryMeter.color
+                        }
+                        R.id.menu_unknown_color -> {
+                            batteryMeterDrawable.unknownColor = batteryMeter.unknownColor ?:
+                                    batteryMeter.color
+                        }
+                    }
+                }
+            }
+
+            true
+        }
+
+        R.id.menu_default_color -> {
+            true
+        }
+
+        R.id.menu_charging_color -> {
+            true
+        }
+
+        R.id.menu_critical_color -> {
+            true
+        }
+
+        R.id.menu_unknown_color -> {
+            true
+        }
+
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun setupBatteryMeter() {
@@ -143,15 +234,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupHeightSpinner() {
-        fun dpToPx(dp: Int): Int {
-            return (dp * Resources.getSystem().displayMetrics.density).toInt()
-        }
-
-        fun pxToDp(px: Int): Int {
-            return (px / Resources.getSystem().displayMetrics.density).toInt()
-        }
-
-        val currentHeight = pxToDp(batteryMeter.height)
+        val currentHeight = pxToDp(batteryMeter.height.toFloat()).toInt()
         val heights = (20..currentHeight step 10).toList()
         val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, heights)
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -162,7 +245,7 @@ class MainActivity : AppCompatActivity() {
         heightSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
                 val batteryMeterLayoutParams = batteryMeter.layoutParams
-                batteryMeterLayoutParams.height = dpToPx(heights[pos])
+                batteryMeterLayoutParams.height = dpToPx(heights[pos].toFloat()).toInt()
                 batteryMeter.layoutParams = batteryMeterLayoutParams
             }
 

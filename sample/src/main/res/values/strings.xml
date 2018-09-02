@@ -10,4 +10,10 @@
     <string name="battery_charging">Charging</string>
     <string name="battery_height">Height</string>
     <string name="battery_height_unit">dp</string>
+    <string name="battery_colors">Colors</string>
+    <string name="battery_colors_default_color">Default Color</string>
+    <string name="battery_colors_indicator_color">Indicator Color</string>
+    <string name="battery_colors_charging_color">Charging Color</string>
+    <string name="battery_colors_critical_color">Critical Color</string>
+    <string name="battery_colors_unknown_color">Unknown Color</string>
 </resources>
