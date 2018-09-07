@@ -3,8 +3,8 @@ package eo.view.batterymeter
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import androidx.core.graphics.ColorUtils
 import eo.view.batterymeter.util.clipOutPathCompat
+import eo.view.batterymeter.util.colorWithAlpha
 import eo.view.batterymeter.util.getColorAttr
 import eo.view.batterymeter.util.withSave
 import java.io.ByteArrayInputStream
@@ -270,19 +270,19 @@ class BatteryMeterDrawable(
         val currentCriticalLevel = criticalChargeLevel
 
         chargeLevelPaint.color = color
-        batteryPaint.color = ColorUtils.setAlphaComponent(color, BATTERY_COLOR_ALPHA)
+        batteryPaint.color = color.colorWithAlpha(BATTERY_COLOR_ALPHA)
 
         if (currentLevel == null) {
             batteryPaint.color = unknownColor ?: color
         } else if (isCharging) {
             chargingColor?.let {
                 chargeLevelPaint.color = it
-                batteryPaint.color = ColorUtils.setAlphaComponent(it, BATTERY_COLOR_ALPHA)
+                batteryPaint.color = it.colorWithAlpha(BATTERY_COLOR_ALPHA)
             }
         } else if (currentCriticalLevel != null && currentLevel <= currentCriticalLevel) {
             criticalColor?.let {
                 chargeLevelPaint.color = it
-                batteryPaint.color = ColorUtils.setAlphaComponent(it, BATTERY_COLOR_ALPHA)
+                batteryPaint.color = it.colorWithAlpha(BATTERY_COLOR_ALPHA)
             }
         }
     }
