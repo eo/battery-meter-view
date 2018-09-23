@@ -30,7 +30,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':batterymeter')
-    implementation project(':coloredit')
+    implementation project(':colorinput')
 
     implementation deps.kotlinStdLib
     implementation deps.appcompat

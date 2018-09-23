@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/color_input_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/color_input_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/color_input_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/color_input_margin" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/labelsBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="alphaLabelView,redLabelView,greenLabelView,blueLabelView" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/hexInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="@dimen/color_input_hex_width"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/alphaSeekBar"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@id/topGuideline">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/hexEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/color_input_hex"
+            android:lines="1"
+            android:maxLines="1"
+            android:inputType="textNoSuggestions"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:typeface="monospace" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/alphaLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/color_input_alpha"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        app:layout_constraintBottom_toBottomOf="@id/alphaSeekBar"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toTopOf="@id/alphaSeekBar" />
+
+    <SeekBar
+        android:id="@+id/alphaSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/color_input_seek_bar_horizontal_margin"
+        android:layout_marginTop="@dimen/color_input_vertical_spacing"
+        android:layout_marginEnd="@dimen/color_input_seek_bar_horizontal_margin"
+        android:max="@integer/color_input_component_max_value"
+        app:layout_constraintBottom_toTopOf="@id/redSeekBar"
+        app:layout_constraintEnd_toStartOf="@id/alphaValueView"
+        app:layout_constraintStart_toEndOf="@id/labelsBarrier"
+        app:layout_constraintTop_toBottomOf="@id/hexInputLayout"
+        tools:progress="@integer/color_input_component_max_value" />
+
+    <TextView
+        android:id="@+id/alphaValueView"
+        android:layout_width="@dimen/color_input_value_width"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="@id/alphaSeekBar"
+        app:layout_constraintEnd_toStartOf="@id/endGuideline"
+        app:layout_constraintStart_toEndOf="@id/alphaSeekBar"
+        app:layout_constraintTop_toTopOf="@id/alphaSeekBar"
+        tools:text="255" />
+
+    <TextView
+        android:id="@+id/redLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/color_input_red"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        app:layout_constraintBottom_toBottomOf="@id/redSeekBar"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toTopOf="@id/redSeekBar" />
+
+    <SeekBar
+        android:id="@+id/redSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/color_input_seek_bar_horizontal_margin"
+        android:layout_marginTop="@dimen/color_input_vertical_spacing"
+        android:layout_marginEnd="@dimen/color_input_seek_bar_horizontal_margin"
+        android:max="@integer/color_input_component_max_value"
+        app:layout_constraintBottom_toTopOf="@id/greenSeekBar"
+        app:layout_constraintEnd_toStartOf="@id/redValueView"
+        app:layout_constraintStart_toEndOf="@id/labelsBarrier"
+        app:layout_constraintTop_toBottomOf="@id/alphaSeekBar"
+        tools:progress="@integer/color_input_component_max_value" />
+
+    <TextView
+        android:id="@+id/redValueView"
+        android:layout_width="@dimen/color_input_value_width"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="@id/redSeekBar"
+        app:layout_constraintEnd_toStartOf="@id/endGuideline"
+        app:layout_constraintStart_toEndOf="@id/redSeekBar"
+        app:layout_constraintTop_toTopOf="@id/redSeekBar"
+        tools:text="255" />
+
+    <TextView
+        android:id="@+id/greenLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/color_input_green"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        app:layout_constraintBottom_toBottomOf="@id/greenSeekBar"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toTopOf="@id/greenSeekBar" />
+
+    <SeekBar
+        android:id="@+id/greenSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/color_input_seek_bar_horizontal_margin"
+        android:layout_marginTop="@dimen/color_input_vertical_spacing"
+        android:layout_marginEnd="@dimen/color_input_seek_bar_horizontal_margin"
+        android:max="@integer/color_input_component_max_value"
+        app:layout_constraintBottom_toTopOf="@id/blueSeekBar"
+        app:layout_constraintEnd_toStartOf="@id/greenValueView"
+        app:layout_constraintStart_toEndOf="@id/labelsBarrier"
+        app:layout_constraintTop_toBottomOf="@id/redSeekBar"
+        tools:progress="@integer/color_input_component_max_value" />
+
+    <TextView
+        android:id="@+id/greenValueView"
+        android:layout_width="@dimen/color_input_value_width"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="@id/greenSeekBar"
+        app:layout_constraintEnd_toStartOf="@id/endGuideline"
+        app:layout_constraintStart_toEndOf="@id/greenSeekBar"
+        app:layout_constraintTop_toTopOf="@id/greenSeekBar"
+        tools:text="255" />
+
+    <TextView
+        android:id="@+id/blueLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/color_input_blue"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        app:layout_constraintBottom_toBottomOf="@id/blueSeekBar"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toTopOf="@id/blueSeekBar" />
+
+    <SeekBar
+        android:id="@+id/blueSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/color_input_seek_bar_horizontal_margin"
+        android:layout_marginTop="@dimen/color_input_vertical_spacing"
+        android:layout_marginEnd="@dimen/color_input_seek_bar_horizontal_margin"
+        android:focusable="true"
+        android:max="@integer/color_input_component_max_value"
+        app:layout_constraintBottom_toTopOf="@id/bottomGuideline"
+        app:layout_constraintEnd_toStartOf="@id/blueValueView"
+        app:layout_constraintStart_toEndOf="@id/labelsBarrier"
+        app:layout_constraintTop_toBottomOf="@id/greenSeekBar"
+        tools:progress="@integer/color_input_component_max_value" />
+
+    <TextView
+        android:id="@+id/blueValueView"
+        android:layout_width="@dimen/color_input_value_width"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="@id/blueSeekBar"
+        app:layout_constraintEnd_toStartOf="@id/endGuideline"
+        app:layout_constraintStart_toEndOf="@id/blueSeekBar"
+        app:layout_constraintTop_toTopOf="@id/blueSeekBar"
+        tools:text="255" />
+
+</merge>

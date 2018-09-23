@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion config.compileSdk
@@ -27,6 +28,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation deps.kotlinStdLib
+    implementation deps.appcompat
+    implementation deps.material
+    implementation deps.constraintlayout
 
     testImplementation deps.junit
     androidTestImplementation deps.atsl

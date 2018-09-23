@@ -1,0 +1,9 @@
+<resources>
+    <string name="color_input_hex">Hex</string>
+    <string name="color_input_hex_value">#%08X</string>
+
+    <string name="color_input_alpha">Alpha</string>
+    <string name="color_input_red">Red</string>
+    <string name="color_input_green">Green</string>
+    <string name="color_input_blue">Blue</string>
+</resources>

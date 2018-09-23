@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="color_input_component_max_value">0xFF</integer>
+</resources>

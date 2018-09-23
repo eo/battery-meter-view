@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="color_input_hex_width">118dp</dimen>
+    <dimen name="color_input_margin">16dp</dimen>
+    <dimen name="color_input_vertical_spacing">16dp</dimen>
+    <dimen name="color_input_seek_bar_horizontal_margin">4dp</dimen>
+    <dimen name="color_input_value_width">24dp</dimen>
+</resources>
