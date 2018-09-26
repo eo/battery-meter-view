@@ -24,13 +24,22 @@ class ColorInputView @JvmOverloads constructor(
         private const val DEFAULT_COLOR = Color.BLACK
     }
 
+    interface ColorChangeListener {
+        fun onColorChanged(color: Int)
+    }
+
     var color: Int
         get() = Color.argb(alpha, red, green, blue)
         set(value) {
-            alpha = Color.alpha(value)
-            red = Color.red(value)
-            green = Color.green(value)
-            blue = Color.blue(value)
+            if (color != value) {
+                alpha = Color.alpha(value)
+                red = Color.red(value)
+                green = Color.green(value)
+                blue = Color.blue(value)
+
+                updateHexInput()
+                colorChangeListener?.onColorChanged(value)
+            }
         }
 
     private var alpha
@@ -60,6 +69,8 @@ class ColorInputView @JvmOverloads constructor(
             blueSeekBar.progress = value
             blueValueView.text = value.toString()
         }
+
+    var colorChangeListener: ColorChangeListener? = null
 
     init {
         inflate(context, R.layout.view_color_input, this)
@@ -96,6 +107,7 @@ class ColorInputView @JvmOverloads constructor(
             blueSeekBar -> blue = progress
         }
 
+        colorChangeListener?.onColorChanged(color)
         hexEditText.clearFocus()
         updateHexInput()
     }
@@ -108,7 +120,10 @@ class ColorInputView @JvmOverloads constructor(
             Color.parseColor(colorHex)
         }
 
-        color = colorInt
+        alpha = Color.alpha(colorInt)
+        red = Color.red(colorInt)
+        green = Color.green(colorInt)
+        blue = Color.blue(colorInt)
     }
 
     override fun onFocusChange(view: View, hasFocus: Boolean) {
