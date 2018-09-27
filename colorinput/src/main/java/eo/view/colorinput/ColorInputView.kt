@@ -124,6 +124,7 @@ class ColorInputView @JvmOverloads constructor(
         red = Color.red(colorInt)
         green = Color.green(colorInt)
         blue = Color.blue(colorInt)
+        colorChangeListener?.onColorChanged(color)
     }
 
     override fun onFocusChange(view: View, hasFocus: Boolean) {
