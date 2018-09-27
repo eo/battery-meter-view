@@ -1,6 +1,8 @@
 package eo.view.batterymeter.util
 
 import android.content.Context
+import android.graphics.Color
+import kotlin.math.roundToInt
 
 
 internal fun Context.getColorAttr(attr: Int): Int {
@@ -11,12 +13,11 @@ internal fun Context.getColorAttr(attr: Int): Int {
     return color
 }
 
-/**
- * Set the alpha component of a color to be `alpha`.
- */
-fun Int.colorWithAlpha(alpha: Int): Int {
-    require (alpha >= 0 || alpha <= 0xFF) {
-        "alpha must be between 0 and 255."
+fun Int.colorWithAlpha(alpha: Float): Int {
+    require (alpha >= 0f || alpha <= 1f) {
+        "alpha must be between 0 and 1."
     }
-    return (this and 0x00FFFFFF) or (alpha shl 24)
+
+    val alphaComponent = (alpha * Color.alpha(this)).roundToInt()
+    return (this and 0x00FFFFFF) or (alphaComponent shl 24)
 }

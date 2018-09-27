@@ -20,7 +20,7 @@ class BatteryMeterDrawable(
         const val MINIMUM_CHARGE_LEVEL = 0
         const val MAXIMUM_CHARGE_LEVEL = 100
 
-        const val BATTERY_COLOR_ALPHA = (0xFF * 0.3f).toInt()
+        const val BATTERY_COLOR_ALPHA = 0.3f
         const val CRITICAL_CHARGE_LEVEL = 10
     }
 
