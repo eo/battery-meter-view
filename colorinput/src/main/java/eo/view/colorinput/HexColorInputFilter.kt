@@ -24,8 +24,8 @@ class HexColorInputFilter : InputFilter {
             // do not exceed max length and do not allow input in front of prefix
             return ""
         } else if (start == end) {
-            // allow deletion except prefix
-            return if (dstart == 0 && dend >= 1) {
+            // allow deletion except just the prefix
+            return if (dstart == 0 && dend >= 1 && dest.length > dend - dstart) {
                 PREFIX.toString()
             } else {
                 null
