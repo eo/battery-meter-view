@@ -16,4 +16,6 @@
     <string name="battery_colors_charging_color">Charging Color</string>
     <string name="battery_colors_critical_color">Critical Color</string>
     <string name="battery_colors_unknown_color">Unknown Color</string>
+
+    <string name="battery_color_set">Set</string>
 </resources>

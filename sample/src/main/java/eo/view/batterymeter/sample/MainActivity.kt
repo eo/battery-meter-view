@@ -1,5 +1,8 @@
 package eo.view.batterymeter.sample
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.Menu
@@ -107,18 +110,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         R.id.menu_default_color -> {
+            openColorPicker(item.icon as BatteryMeter, ColorEditActivity.ColorType.DEFAULT)
             true
         }
 
         R.id.menu_charging_color -> {
+            openColorPicker(item.icon as BatteryMeter, ColorEditActivity.ColorType.CHARGING)
             true
         }
 
         R.id.menu_critical_color -> {
+            openColorPicker(item.icon as BatteryMeter, ColorEditActivity.ColorType.CRITICAL)
             true
         }
 
         R.id.menu_unknown_color -> {
+            openColorPicker(item.icon as BatteryMeter, ColorEditActivity.ColorType.UNKNOWN)
             true
         }
 
@@ -251,6 +258,42 @@ class MainActivity : AppCompatActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // no-op
+            }
+        }
+    }
+
+    private fun openColorPicker(batteryMeter: BatteryMeter, colorType: ColorEditActivity.ColorType) {
+        startActivityForResult(
+            ColorEditActivity.newIntent(this, batteryMeter, colorType),
+            colorType.ordinal
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK) {
+            val color = data?.getIntExtra(ColorEditActivity.EXTRA_SELECTED_COLOR, Color.BLACK)
+                ?: Color.BLACK
+
+            when (requestCode) {
+                ColorEditActivity.ColorType.DEFAULT.ordinal -> {
+                    batteryMeter.color = color
+                }
+
+                ColorEditActivity.ColorType.INDICATOR.ordinal -> {
+                    batteryMeter.indicatorColor = color
+                }
+
+                ColorEditActivity.ColorType.CHARGING.ordinal -> {
+                    batteryMeter.chargingColor = color
+                }
+
+                ColorEditActivity.ColorType.CRITICAL.ordinal -> {
+                    batteryMeter.criticalColor = color
+                }
+
+                ColorEditActivity.ColorType.UNKNOWN.ordinal -> {
+                    batteryMeter.unknownColor = color
+                }
             }
         }
     }
