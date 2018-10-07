@@ -32,3 +32,29 @@ dependencies {
     androidTestImplementation deps.atsl
     androidTestImplementation deps.espresso
 }
+
+ext {
+    bintrayRepo = 'view'
+    bintrayName = 'batterymeter'
+
+    publishedGroupId = 'eo.view'
+    libraryName = 'BatteryMeter'
+    artifact = 'batterymeter'
+
+    libraryDescription = 'Material design battery meter view for Android'
+
+    siteUrl = 'https://github.com/eo/battery-meter-view'
+    gitUrl = 'https://github.com/eo/battery-meter-view.git'
+
+    libraryVersion = config.versionName
+
+    developerId = 'eo'
+    developerName = 'Erdem Orman'
+    developerEmail = 'ormanerdem@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: '../bintray-upload.gradle'
