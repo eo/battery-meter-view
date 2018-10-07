@@ -185,6 +185,7 @@ class BatteryMeterDrawable(
     override fun draw(canvas: Canvas) {
         canvas.withSave {
             if (!indicatorPath.isEmpty) {
+                drawPath(indicatorPath, indicatorPaint)
                 clipOutPathCompat(indicatorPath)
             }
 
@@ -195,10 +196,6 @@ class BatteryMeterDrawable(
                     clipRect(chargeLevelClipRect)
                     drawPath(batteryPath, chargeLevelPaint)
                 }
-            }
-
-            if (!indicatorPath.isEmpty) {
-                drawPath(indicatorPath, indicatorPaint)
             }
         }
     }
