@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_color_edit">
+
+    <eo.view.batterymeter.BatteryMeterView
+        android:id="@+id/chargingBatteryMeter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="@id/batteryMeter"
+        app:layout_constraintEnd_toStartOf="@id/criticalBatteryMeter"
+        app:layout_constraintStart_toStartOf="@id/batteryMeter"
+        app:layout_constraintTop_toTopOf="@id/batteryMeter" />
+
+    <eo.view.batterymeter.BatteryMeterView
+        android:id="@+id/criticalBatteryMeter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="@id/chargingBatteryMeter"
+        app:layout_constraintEnd_toStartOf="@id/unknownBatteryMeter"
+        app:layout_constraintStart_toEndOf="@id/chargingBatteryMeter"
+        app:layout_constraintTop_toTopOf="@id/chargingBatteryMeter" />
+
+    <eo.view.batterymeter.BatteryMeterView
+        android:id="@+id/unknownBatteryMeter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="@id/chargingBatteryMeter"
+        app:layout_constraintEnd_toEndOf="@id/batteryMeter"
+        app:layout_constraintStart_toEndOf="@id/criticalBatteryMeter"
+        app:layout_constraintTop_toTopOf="@id/chargingBatteryMeter" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/indicatorBatteryMeterGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="chargingBatteryMeter,criticalBatteryMeter,unknownBatteryMeter" />
+
+</merge>

@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import eo.view.batterymeter.BatteryMeter
 import eo.view.colorinput.ColorInputView
 import kotlinx.android.synthetic.main.activity_color_edit.*
+import kotlinx.android.synthetic.main.include_battery_meters_with_indicator.*
 
 class ColorEditActivity : AppCompatActivity(), ColorInputView.ColorChangeListener {
 
@@ -66,7 +69,7 @@ class ColorEditActivity : AppCompatActivity(), ColorInputView.ColorChangeListene
         setContentView(R.layout.activity_color_edit)
 
         setupActionBar()
-        setupBatteryMeter()
+        setupBatteryMeters()
         setupColorInput()
     }
 
@@ -105,36 +108,71 @@ class ColorEditActivity : AppCompatActivity(), ColorInputView.ColorChangeListene
         }
     }
 
-    private fun setupBatteryMeter() {
+    private fun setupBatteryMeters() {
+        when (colorType) {
+            ColorType.INDICATOR ->  {
+                setupIndicatorBatteryMeters()
+                batteryMeter.isInvisible = true
+                indicatorBatteryMeterGroup.isVisible = true
+            }
+            else -> {
+                setupBattery(batteryMeter)
+                indicatorBatteryMeterGroup.isVisible = false
+                batteryMeter.isVisible = true
+            }
+        }
+    }
+
+    private fun setupIndicatorBatteryMeters() {
+        with(chargingBatteryMeter) {
+            setupBattery(this)
+            chargeLevel = 70
+            isCharging = true
+        }
+
+        with(criticalBatteryMeter) {
+            setupBattery(this)
+            isCharging = false
+            criticalChargeLevel = 15
+            chargeLevel = criticalChargeLevel
+        }
+
+        with(unknownBatteryMeter) {
+            setupBattery(this)
+            chargeLevel = null
+        }
+    }
+
+    private fun setupBattery(battery: BatteryMeter) {
         with (intent) {
-            batteryMeter.theme = when (getIntExtra(EXTRA_THEME, 0)) {
+            battery.theme = when (getIntExtra(EXTRA_THEME, 0)) {
                 BatteryMeter.Theme.ROUNDED.ordinal -> BatteryMeter.Theme.ROUNDED
                 else -> BatteryMeter.Theme.SHARP
             }
 
             if (hasExtra(EXTRA_CHARGE_LEVEL)) {
-                batteryMeter.chargeLevel = getIntExtra(EXTRA_CHARGE_LEVEL, 0)
+                battery.chargeLevel = getIntExtra(EXTRA_CHARGE_LEVEL, 0)
             }
 
             if (hasExtra(EXTRA_CRITICAL_CHARGE_LEVEL)) {
-                batteryMeter.criticalChargeLevel = getIntExtra(EXTRA_CRITICAL_CHARGE_LEVEL, 0)
+                battery.criticalChargeLevel = getIntExtra(EXTRA_CRITICAL_CHARGE_LEVEL, 0)
             }
 
-            batteryMeter.isCharging = getBooleanExtra(EXTRA_IS_CHARGING, false)
+            battery.isCharging = getBooleanExtra(EXTRA_IS_CHARGING, false)
 
-            batteryMeter.color = getIntExtra(EXTRA_DEFAULT_COLOR, Color.BLACK)
-            batteryMeter.indicatorColor  = getIntExtra(EXTRA_INDICATOR_COLOR, Color.TRANSPARENT)
+            battery.color = getIntExtra(EXTRA_DEFAULT_COLOR, Color.BLACK)
+            battery.indicatorColor  = getIntExtra(EXTRA_INDICATOR_COLOR, Color.TRANSPARENT)
 
             if (hasExtra(EXTRA_CHARGING_COLOR)) {
-                batteryMeter.chargingColor = getIntExtra(EXTRA_CHARGING_COLOR, Color.BLACK)
+                battery.chargingColor = getIntExtra(EXTRA_CHARGING_COLOR, Color.BLACK)
             }
 
             if (hasExtra(EXTRA_CRITICAL_COLOR)) {
-                batteryMeter.criticalColor = getIntExtra(EXTRA_CRITICAL_COLOR, Color.BLACK)
+                battery.criticalColor = getIntExtra(EXTRA_CRITICAL_COLOR, Color.BLACK)
             }
 
             if (hasExtra(EXTRA_UNKNOWN_COLOR)) {
-                batteryMeter.unknownColor = getIntExtra(EXTRA_UNKNOWN_COLOR, Color.BLACK)
+                battery.unknownColor = getIntExtra(EXTRA_UNKNOWN_COLOR, Color.BLACK)
             }
         }
     }
@@ -142,7 +180,7 @@ class ColorEditActivity : AppCompatActivity(), ColorInputView.ColorChangeListene
     private fun setupColorInput() {
         colorInputView.color = when (colorType) {
             ColorType.DEFAULT -> batteryMeter.color
-            ColorType.INDICATOR -> batteryMeter.indicatorColor
+            ColorType.INDICATOR -> chargingBatteryMeter.indicatorColor
             ColorType.CHARGING -> batteryMeter.chargingColor ?: batteryMeter.color
             ColorType.CRITICAL -> batteryMeter.criticalColor ?: batteryMeter.color
             ColorType.UNKNOWN -> batteryMeter.unknownColor ?: batteryMeter.color
@@ -153,7 +191,11 @@ class ColorEditActivity : AppCompatActivity(), ColorInputView.ColorChangeListene
     override fun onColorChanged(color: Int) {
         when (colorType) {
             ColorType.DEFAULT -> batteryMeter.color = color
-            ColorType.INDICATOR -> batteryMeter.indicatorColor = color
+            ColorType.INDICATOR -> {
+                chargingBatteryMeter.indicatorColor = color
+                criticalBatteryMeter.indicatorColor = color
+                unknownBatteryMeter.indicatorColor = color
+            }
             ColorType.CHARGING -> batteryMeter.chargingColor = color
             ColorType.CRITICAL -> batteryMeter.criticalColor = color
             ColorType.UNKNOWN -> batteryMeter.unknownColor = color

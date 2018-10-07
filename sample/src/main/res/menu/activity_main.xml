@@ -27,6 +27,7 @@
 
             <item
                 android:id="@+id/menu_indicator_color"
+                android:icon="@drawable/ic_indicator_shape"
                 android:title="@string/battery_colors_indicator_color" />
         </menu>
 

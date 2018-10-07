@@ -1,6 +1,5 @@
 package eo.view.batterymeter.sample
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
@@ -85,6 +84,7 @@ class MainActivity : AppCompatActivity() {
             item.subMenu.forEach { colorMenuItem ->
                 (colorMenuItem.icon as? BatteryMeterDrawable)?.let { batteryMeterDrawable ->
                     batteryMeterDrawable.theme = batteryMeter.theme
+                    batteryMeterDrawable.indicatorColor = batteryMeter.indicatorColor
 
                     when (colorMenuItem.itemId) {
                         R.id.menu_default_color -> {
@@ -126,6 +126,11 @@ class MainActivity : AppCompatActivity() {
 
         R.id.menu_unknown_color -> {
             openColorPicker(item.icon as BatteryMeter, ColorEditActivity.ColorType.UNKNOWN)
+            true
+        }
+
+        R.id.menu_indicator_color -> {
+            openColorPicker(batteryMeter, ColorEditActivity.ColorType.INDICATOR)
             true
         }
 
@@ -262,7 +267,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun openColorPicker(batteryMeter: BatteryMeter, colorType: ColorEditActivity.ColorType) {
+    private fun openColorPicker(
+        batteryMeter: BatteryMeter,
+        colorType: ColorEditActivity.ColorType
+    ) {
         startActivityForResult(
             ColorEditActivity.newIntent(this, batteryMeter, colorType),
             colorType.ordinal
