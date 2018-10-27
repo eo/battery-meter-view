@@ -10,6 +10,27 @@ dependencies {
 }
 ```
 
+Usage
+-----
+Library contains both `BatteryMeterView` and `BatteryMeterDrawable` classes. Following XML attributes have corresponding class properties.
+
+```xml
+<eo.view.batterymeter.BatteryMeterView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:batteryChargeLevel="80"
+    app:batteryChargingColor="#4caf50"
+    app:batteryColor="#0277bd"
+    app:batteryCriticalChargeLevel="15"
+    app:batteryCriticalColor="#d84315"
+    app:batteryIndicatorColor="@android:color/transparent"
+    app:batteryIsCharging="true"
+    app:batteryTheme="rounded"
+    app:batteryUnknownColor="#e0e0e0" />
+```
+
+Themes & States
+---------------
 |   | Unknown | Default | Charging | Critical
 | - | ------- | ------- | -------- | --------
 **Rounded** | ![Rounded Unknown](/images/rounded_unknown.png) | ![Rounded Default](/images/rounded_default.png) | ![Rounded Charging](/images/rounded_charging.png) | ![Rounded Critical](/images/rounded_critical.png)
