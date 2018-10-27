@@ -1,6 +1,6 @@
 buildscript {
-    final majorVersion = 0
-    final minorVersion = 1
+    final majorVersion = 1
+    final minorVersion = 0
     final patchVersion = 0
 
     final latestSdk = 28
@@ -44,7 +44,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0-alpha13'
+        classpath 'com.android.tools.build:gradle:3.3.0-beta01'
         classpath deps.kotlinGradlePlugin
 
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
