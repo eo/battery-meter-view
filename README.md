@@ -1,6 +1,10 @@
 # battery-meter-view
 Material design battery meter view for Android
 
+[ ![Download](https://api.bintray.com/packages/eo/view/batterymeter/images/download.svg) ](https://bintray.com/eo/view/batterymeter/_latestVersion)
+[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](https://github.com/eo/battery-meter-view/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/minSdkVersion-19-red.svg)](https://developer.android.com/about/dashboards/)
+
 Download
 --------
 
