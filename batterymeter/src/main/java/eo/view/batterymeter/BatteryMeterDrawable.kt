@@ -294,49 +294,30 @@ class BatteryMeterDrawable(
         DataInputStream(ByteArrayInputStream(rawBytes)).use { input ->
             val newAspectRatio = input.readFloat()
 
-            // battery shape
-            var currentShapeLength = input.readInt()
-            var currentOffset = rawBytes.size - input.available()
-            batteryShapeDataStream = DataInputStream(
-                ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
-            )
-            input.skipBytes(currentShapeLength)
-
-            // alert indicator
-            currentShapeLength = input.readInt()
-            currentOffset = rawBytes.size - input.available()
-            alertIndicatorDataStream = DataInputStream(
-                ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
-            )
-            input.skipBytes(currentShapeLength)
-
-            // charging indicator
-            currentShapeLength = input.readInt()
-            currentOffset = rawBytes.size - input.available()
-            chargingIndicatorDataStream = DataInputStream(
-                ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
-            )
-            input.skipBytes(currentShapeLength)
-
-            // unknown indicator
-            currentShapeLength = input.readInt()
-            currentOffset = rawBytes.size - input.available()
-            unknownIndicatorDataStream = DataInputStream(
-                ByteArrayInputStream(rawBytes, currentOffset, currentShapeLength)
-            )
+            batteryShapeDataStream = createShapeDataInputStream(input, rawBytes)
+            alertIndicatorDataStream = createShapeDataInputStream(input, rawBytes)
+            chargingIndicatorDataStream = createShapeDataInputStream(input, rawBytes)
+            unknownIndicatorDataStream = createShapeDataInputStream(input, rawBytes)
 
             aspectRatio = newAspectRatio
         }
     }
 
+    private fun createShapeDataInputStream(
+        input: DataInputStream,
+        rawBytes: ByteArray
+    ): DataInputStream {
+        val shapeBytesCount = input.readInt()
+        val shapeBytesOffset = rawBytes.size - input.available()
+        val shapeDataInputStream = DataInputStream(
+            ByteArrayInputStream(rawBytes, shapeBytesOffset, shapeBytesCount)
+        )
+        input.skipBytes(shapeBytesCount)
+
+        return shapeDataInputStream
+    }
+
     private fun performPathCommands(pathDataStream: DataInputStream, path: Path) {
-
-        fun xRatioToCoordinate(xRatio: Float) =
-            batteryShapeBounds.left + xRatio * batteryShapeBounds.width()
-
-        fun yRatioToCoordinate(yRatio: Float) =
-            batteryShapeBounds.top + yRatio * batteryShapeBounds.height()
-
         path.reset()
         pathDataStream.reset()
 
@@ -364,4 +345,10 @@ class BatteryMeterDrawable(
             }
         }
     }
+
+    private fun xRatioToCoordinate(xRatio: Float) =
+        batteryShapeBounds.left + xRatio * batteryShapeBounds.width()
+
+    private fun yRatioToCoordinate(yRatio: Float) =
+        batteryShapeBounds.top + yRatio * batteryShapeBounds.height()
 }
