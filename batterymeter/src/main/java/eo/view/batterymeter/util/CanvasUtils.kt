@@ -18,7 +18,7 @@ inline fun Canvas.withSave(block: Canvas.() -> Unit) {
     }
 }
 
-fun Canvas.clipOutPathCompat(path: Path) {
+internal fun Canvas.clipOutPathCompat(path: Path) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         clipOutPath(path)
     } else {

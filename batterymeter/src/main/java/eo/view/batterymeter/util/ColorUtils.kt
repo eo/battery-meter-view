@@ -13,7 +13,7 @@ internal fun Context.getColorAttr(attr: Int): Int {
     return color
 }
 
-fun Int.colorWithAlpha(alpha: Float): Int {
+internal fun Int.colorWithAlpha(alpha: Float): Int {
     require (alpha >= 0f || alpha <= 1f) {
         "alpha must be between 0 and 1."
     }

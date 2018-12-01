@@ -16,7 +16,7 @@ class BatteryMeterView @JvmOverloads constructor(
     override var theme: BatteryMeter.Theme
         get() = batteryMeterDrawable.theme
         set(value) {
-            if (value != theme) {
+            if (theme != value) {
                 batteryMeterDrawable.theme = value
                 invalidate()
             }
@@ -25,7 +25,7 @@ class BatteryMeterView @JvmOverloads constructor(
     override var chargeLevel: Int?
         get() = batteryMeterDrawable.chargeLevel
         set(value) {
-            if (value != chargeLevel) {
+            if (chargeLevel != value) {
                 batteryMeterDrawable.chargeLevel = value
                 invalidate()
             }
@@ -34,7 +34,7 @@ class BatteryMeterView @JvmOverloads constructor(
     override var criticalChargeLevel: Int?
         get() = batteryMeterDrawable.criticalChargeLevel
         set(value) {
-            if (value != criticalChargeLevel) {
+            if (criticalChargeLevel != value) {
                 batteryMeterDrawable.criticalChargeLevel = value
                 invalidate()
             }
@@ -43,7 +43,7 @@ class BatteryMeterView @JvmOverloads constructor(
     override var isCharging: Boolean
         get() = batteryMeterDrawable.isCharging
         set(value) {
-            if (value != isCharging) {
+            if (isCharging != value) {
                 batteryMeterDrawable.isCharging = value
                 invalidate()
             }
@@ -52,7 +52,7 @@ class BatteryMeterView @JvmOverloads constructor(
     override var color: Int
         get() = batteryMeterDrawable.color
         set(value) {
-            if (value != color) {
+            if (color != value) {
                 batteryMeterDrawable.color = value
                 invalidate()
             }
@@ -61,7 +61,7 @@ class BatteryMeterView @JvmOverloads constructor(
     override var indicatorColor: Int
         get() = batteryMeterDrawable.indicatorColor
         set(value) {
-            if (value != indicatorColor) {
+            if (indicatorColor != value) {
                 batteryMeterDrawable.indicatorColor = value
                 invalidate()
             }
@@ -70,7 +70,7 @@ class BatteryMeterView @JvmOverloads constructor(
     override var chargingColor: Int?
         get() = batteryMeterDrawable.chargingColor
         set(value) {
-            if (value != chargingColor) {
+            if (chargingColor != value) {
                 batteryMeterDrawable.chargingColor = value
                 invalidate()
             }
@@ -79,7 +79,7 @@ class BatteryMeterView @JvmOverloads constructor(
     override var criticalColor: Int?
         get() = batteryMeterDrawable.criticalColor
         set(value) {
-            if (value != criticalColor) {
+            if (criticalColor != value) {
                 batteryMeterDrawable.criticalColor = value
                 invalidate()
             }
@@ -88,7 +88,7 @@ class BatteryMeterView @JvmOverloads constructor(
     override var unknownColor: Int?
         get() = batteryMeterDrawable.unknownColor
         set(value) {
-            if (value != unknownColor) {
+            if (unknownColor != value) {
                 batteryMeterDrawable.unknownColor = value
                 invalidate()
             }

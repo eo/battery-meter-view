@@ -11,7 +11,7 @@ import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 
 
-class BatteryMeterDrawable(
+class BatteryMeterDrawable @JvmOverloads constructor(
     private val context: Context,
     theme: BatteryMeter.Theme = BatteryMeter.Theme.SHARP
 ) : Drawable(), BatteryMeter {
@@ -36,7 +36,7 @@ class BatteryMeterDrawable(
 
     private var aspectRatio: Float = 1f
         set(value) {
-            if (value != field) {
+            if (field != value) {
                 field = value
                 updateBatteryShapeBounds()
             }
@@ -63,7 +63,7 @@ class BatteryMeterDrawable(
 
     override var theme = theme
         set(value) {
-            if (value != field) {
+            if (field != value) {
                 field = value
                 loadThemeShapes()
                 updateBatteryPath()
@@ -75,7 +75,7 @@ class BatteryMeterDrawable(
     override var chargeLevel: Int? = null
         set(value) {
             val newChargeLevel = value?.coerceIn(MINIMUM_CHARGE_LEVEL, MAXIMUM_CHARGE_LEVEL)
-            if (newChargeLevel != field) {
+            if (field != newChargeLevel) {
                 field = newChargeLevel
                 updateIndicatorPath()
                 updateChargeLevelClipRect()
@@ -86,7 +86,7 @@ class BatteryMeterDrawable(
 
     override var isCharging: Boolean = false
         set(value) {
-            if (value != field) {
+            if (field != value) {
                 field = value
                 updateIndicatorPath()
                 updatePaintColors()
@@ -97,7 +97,7 @@ class BatteryMeterDrawable(
     override var criticalChargeLevel: Int? = CRITICAL_CHARGE_LEVEL
         set(value) {
             val newCriticalChargeLevel = value?.coerceIn(MINIMUM_CHARGE_LEVEL, MAXIMUM_CHARGE_LEVEL)
-            if (newCriticalChargeLevel != field) {
+            if (field != newCriticalChargeLevel) {
                 field = newCriticalChargeLevel
                 updateIndicatorPath()
                 updatePaintColors()
@@ -107,7 +107,7 @@ class BatteryMeterDrawable(
 
     override var color: Int = context.getColorAttr(android.R.attr.colorForeground)
         set(value) {
-            if (value != field) {
+            if (field != value) {
                 field = value
                 updatePaintColors()
                 invalidateSelf()
@@ -116,7 +116,7 @@ class BatteryMeterDrawable(
 
     override var chargingColor: Int? = null
         set(value) {
-            if (value != field) {
+            if (field != value) {
                 field = value
                 updatePaintColors()
                 invalidateSelf()
@@ -125,7 +125,7 @@ class BatteryMeterDrawable(
 
     override var criticalColor: Int? = null
         set(value) {
-            if (value != field) {
+            if (field != value) {
                 field = value
                 updatePaintColors()
                 invalidateSelf()
@@ -134,7 +134,7 @@ class BatteryMeterDrawable(
 
     override var unknownColor: Int? = null
         set(value) {
-            if (value != field) {
+            if (field != value) {
                 field = value
                 updatePaintColors()
                 invalidateSelf()
