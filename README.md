@@ -1,4 +1,6 @@
-# battery-meter-view
+# Battery Meter View
+![Icon](/sample/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+
 Material design battery meter view for Android
 
 [ ![Download](https://api.bintray.com/packages/eo/view/batterymeter/images/download.svg) ](https://bintray.com/eo/view/batterymeter/_latestVersion)
