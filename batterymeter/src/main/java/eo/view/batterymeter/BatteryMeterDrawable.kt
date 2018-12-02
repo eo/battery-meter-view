@@ -192,10 +192,8 @@ class BatteryMeterDrawable @JvmOverloads constructor(
             drawPath(batteryPath, batteryPaint)
 
             if (!chargeLevelClipRect.isEmpty) {
-                withSave {
-                    clipRect(chargeLevelClipRect)
-                    drawPath(batteryPath, chargeLevelPaint)
-                }
+                clipRect(chargeLevelClipRect)
+                drawPath(batteryPath, chargeLevelPaint)
             }
         }
     }
