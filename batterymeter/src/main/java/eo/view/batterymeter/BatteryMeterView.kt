@@ -8,7 +8,7 @@ import android.view.View
 class BatteryMeterView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = R.attr.batteryMeterStyle
 ) : View(context, attrs, defStyleAttr), BatteryMeter {
 
     private val batteryMeterDrawable: BatteryMeterDrawable
@@ -100,14 +100,12 @@ class BatteryMeterView @JvmOverloads constructor(
             attrs,
             R.styleable.BatteryMeterView,
             defStyleAttr,
-            0
+            R.style.Widget_BatteryMeter
         )
 
         val themes = BatteryMeter.Theme.values()
-        val themeIndex = typedArray.getInt(
-            R.styleable.BatteryMeterView_batteryTheme,
-            BatteryMeter.Theme.SHARP.ordinal
-        ).coerceIn(0, themes.lastIndex)
+        val themeIndex = typedArray.getInt(R.styleable.BatteryMeterView_batteryTheme, 0)
+            .coerceIn(0, themes.lastIndex)
 
         batteryMeterDrawable = BatteryMeterDrawable(context, themes[themeIndex])
 
@@ -122,7 +120,7 @@ class BatteryMeterView @JvmOverloads constructor(
         }
 
         isCharging =
-                typedArray.getBoolean(R.styleable.BatteryMeterView_batteryIsCharging, isCharging)
+            typedArray.getBoolean(R.styleable.BatteryMeterView_batteryIsCharging, isCharging)
 
         color = typedArray.getColor(R.styleable.BatteryMeterView_batteryColor, color)
         indicatorColor = typedArray.getColor(
@@ -132,17 +130,17 @@ class BatteryMeterView @JvmOverloads constructor(
 
         if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryChargingColor)) {
             chargingColor =
-                    typedArray.getColor(R.styleable.BatteryMeterView_batteryChargingColor, color)
+                typedArray.getColor(R.styleable.BatteryMeterView_batteryChargingColor, color)
         }
 
         if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryCriticalColor)) {
             criticalColor =
-                    typedArray.getColor(R.styleable.BatteryMeterView_batteryCriticalColor, color)
+                typedArray.getColor(R.styleable.BatteryMeterView_batteryCriticalColor, color)
         }
 
         if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryUnknownColor)) {
             unknownColor =
-                    typedArray.getColor(R.styleable.BatteryMeterView_batteryUnknownColor, color)
+                typedArray.getColor(R.styleable.BatteryMeterView_batteryUnknownColor, color)
         }
 
         typedArray.recycle()

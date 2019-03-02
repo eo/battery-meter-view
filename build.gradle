@@ -44,7 +44,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.0-alpha02'
+        classpath 'com.android.tools.build:gradle:3.4.0-beta03'
         classpath deps.kotlinGradlePlugin
 
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
