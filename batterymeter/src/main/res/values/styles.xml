@@ -2,8 +2,8 @@
 <resources>
 
     <style name="Widget.BatteryMeter" parent="android:Widget">
-        <item name="batteryColor">?android:colorForeground</item>
-        <item name="batteryTheme">rounded</item>
+        <item name="batteryMeterColor">?android:colorForeground</item>
+        <item name="batteryMeterTheme">rounded</item>
     </style>
 
 </resources>

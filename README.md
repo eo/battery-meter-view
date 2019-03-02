@@ -24,15 +24,15 @@ Library contains both `BatteryMeterView` and `BatteryMeterDrawable` classes. Fol
 <eo.view.batterymeter.BatteryMeterView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:batteryChargeLevel="80"
-    app:batteryChargingColor="#4caf50"
-    app:batteryColor="#0277bd"
-    app:batteryCriticalChargeLevel="15"
-    app:batteryCriticalColor="#d84315"
-    app:batteryIndicatorColor="@android:color/transparent"
-    app:batteryIsCharging="true"
-    app:batteryTheme="rounded"
-    app:batteryUnknownColor="#e0e0e0" />
+    app:batteryMeterChargeLevel="80"
+    app:batteryMeterChargingColor="#4caf50"
+    app:batteryMeterColor="#0277bd"
+    app:batteryMeterCriticalChargeLevel="15"
+    app:batteryMeterCriticalColor="#d84315"
+    app:batteryMeterIndicatorColor="@android:color/transparent"
+    app:batteryMeterIsCharging="true"
+    app:batteryMeterTheme="rounded"
+    app:batteryMeterUnknownColor="#e0e0e0" />
 ```
 
 Themes & States

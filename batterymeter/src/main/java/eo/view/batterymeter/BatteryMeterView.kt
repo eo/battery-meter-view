@@ -104,43 +104,43 @@ class BatteryMeterView @JvmOverloads constructor(
         )
 
         val themes = BatteryMeter.Theme.values()
-        val themeIndex = typedArray.getInt(R.styleable.BatteryMeterView_batteryTheme, 0)
+        val themeIndex = typedArray.getInt(R.styleable.BatteryMeterView_batteryMeterTheme, 0)
             .coerceIn(0, themes.lastIndex)
 
         batteryMeterDrawable = BatteryMeterDrawable(context, themes[themeIndex])
 
-        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryChargeLevel)) {
-            chargeLevel = typedArray.getInt(R.styleable.BatteryMeterView_batteryChargeLevel, 0)
+        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryMeterChargeLevel)) {
+            chargeLevel = typedArray.getInt(R.styleable.BatteryMeterView_batteryMeterChargeLevel, 0)
         }
 
-        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryCriticalChargeLevel)) {
+        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryMeterCriticalChargeLevel)) {
             criticalChargeLevel = typedArray.getInt(
-                R.styleable.BatteryMeterView_batteryCriticalChargeLevel, 0
+                R.styleable.BatteryMeterView_batteryMeterCriticalChargeLevel, 0
             )
         }
 
         isCharging =
-            typedArray.getBoolean(R.styleable.BatteryMeterView_batteryIsCharging, isCharging)
+            typedArray.getBoolean(R.styleable.BatteryMeterView_batteryMeterIsCharging, isCharging)
 
-        color = typedArray.getColor(R.styleable.BatteryMeterView_batteryColor, color)
+        color = typedArray.getColor(R.styleable.BatteryMeterView_batteryMeterColor, color)
         indicatorColor = typedArray.getColor(
-            R.styleable.BatteryMeterView_batteryIndicatorColor,
+            R.styleable.BatteryMeterView_batteryMeterIndicatorColor,
             indicatorColor
         )
 
-        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryChargingColor)) {
+        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryMeterChargingColor)) {
             chargingColor =
-                typedArray.getColor(R.styleable.BatteryMeterView_batteryChargingColor, color)
+                typedArray.getColor(R.styleable.BatteryMeterView_batteryMeterChargingColor, color)
         }
 
-        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryCriticalColor)) {
+        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryMeterCriticalColor)) {
             criticalColor =
-                typedArray.getColor(R.styleable.BatteryMeterView_batteryCriticalColor, color)
+                typedArray.getColor(R.styleable.BatteryMeterView_batteryMeterCriticalColor, color)
         }
 
-        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryUnknownColor)) {
+        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryMeterUnknownColor)) {
             unknownColor =
-                typedArray.getColor(R.styleable.BatteryMeterView_batteryUnknownColor, color)
+                typedArray.getColor(R.styleable.BatteryMeterView_batteryMeterUnknownColor, color)
         }
 
         typedArray.recycle()

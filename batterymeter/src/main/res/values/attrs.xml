@@ -4,18 +4,18 @@
     <attr name="batteryMeterStyle" format="reference" />
 
     <declare-styleable name="BatteryMeterView">
-        <attr name="batteryChargeLevel" format="integer" />
-        <attr name="batteryCriticalChargeLevel" format="integer" />
-        <attr name="batteryIsCharging" format="boolean" />
+        <attr name="batteryMeterChargeLevel" format="integer" />
+        <attr name="batteryMeterCriticalChargeLevel" format="integer" />
+        <attr name="batteryMeterIsCharging" format="boolean" />
 
         <!-- Appearance -->
-        <attr name="batteryColor" format="color" />
-        <attr name="batteryIndicatorColor" format="color" />
-        <attr name="batteryChargingColor" format="color" />
-        <attr name="batteryCriticalColor" format="color" />
-        <attr name="batteryUnknownColor" format="color" />
+        <attr name="batteryMeterColor" format="color" />
+        <attr name="batteryMeterIndicatorColor" format="color" />
+        <attr name="batteryMeterChargingColor" format="color" />
+        <attr name="batteryMeterCriticalColor" format="color" />
+        <attr name="batteryMeterUnknownColor" format="color" />
 
-        <attr name="batteryTheme" format="enum">
+        <attr name="batteryMeterTheme" format="enum">
             <enum name="rounded" value="0" />
             <enum name="sharp" value="1" />
         </attr>
