@@ -12,7 +12,7 @@ Download
 
 ```groovy
 dependencies {
-  implementation 'eo.view:batterymeter:1.1.1'
+  implementation 'eo.view:batterymeter:1.2.0'
 }
 ```
 
