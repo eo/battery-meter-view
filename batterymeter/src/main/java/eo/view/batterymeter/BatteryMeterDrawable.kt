@@ -141,6 +141,15 @@ class BatteryMeterDrawable @JvmOverloads constructor(
             }
         }
 
+    override var backgroundColor: Int? = null
+        set(value) {
+            if (field != value) {
+                field = value
+                updatePaintColors()
+                invalidateSelf()
+            }
+        }
+
     override var indicatorColor: Int
         get() = indicatorPaint.color
         set(value) {
@@ -265,7 +274,7 @@ class BatteryMeterDrawable @JvmOverloads constructor(
         val currentCriticalLevel = criticalChargeLevel
 
         chargeLevelPaint.color = color
-        batteryPaint.color = color.colorWithAlpha(BATTERY_COLOR_ALPHA)
+        batteryPaint.color = backgroundColor ?: color.colorWithAlpha(BATTERY_COLOR_ALPHA)
 
         if (currentLevel == null) {
             batteryPaint.color = unknownColor ?: color

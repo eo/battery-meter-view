@@ -32,6 +32,7 @@ Library contains both `BatteryMeterView` and `BatteryMeterDrawable` classes. Fol
     app:batteryMeterIndicatorColor="@android:color/transparent"
     app:batteryMeterIsCharging="true"
     app:batteryMeterTheme="rounded"
+    app:batteryMeterBackgroundColor="#c0ffee"
     app:batteryMeterUnknownColor="#e0e0e0" />
 ```
 

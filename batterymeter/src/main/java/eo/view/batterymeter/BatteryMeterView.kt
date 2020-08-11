@@ -94,6 +94,14 @@ class BatteryMeterView @JvmOverloads constructor(
             }
         }
 
+    override var backgroundColor: Int?
+        get() = batteryMeterDrawable.backgroundColor
+        set(value) {
+            if (backgroundColor != value) {
+                batteryMeterDrawable.backgroundColor = value
+                invalidate()
+            }
+        }
 
     init {
         val typedArray = context.theme.obtainStyledAttributes(
@@ -141,6 +149,11 @@ class BatteryMeterView @JvmOverloads constructor(
         if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryMeterUnknownColor)) {
             unknownColor =
                 typedArray.getColor(R.styleable.BatteryMeterView_batteryMeterUnknownColor, color)
+        }
+
+        if (typedArray.hasValue(R.styleable.BatteryMeterView_batteryMeterBackgroundColor)) {
+            backgroundColor =
+                typedArray.getColor(R.styleable.BatteryMeterView_batteryMeterBackgroundColor, color)
         }
 
         typedArray.recycle()

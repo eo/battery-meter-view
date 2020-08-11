@@ -17,4 +17,5 @@ interface BatteryMeter {
     var chargingColor: Int?
     var criticalColor: Int?
     var unknownColor: Int?
+    var backgroundColor: Int?
 }
