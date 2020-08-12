@@ -174,4 +174,16 @@ class BatteryMeterView @JvmOverloads constructor(
             else -> batteryMeterDrawable.setPadding(start, top, end, bottom)
         }
     }
+
+    fun animateToLevel(target: Int, from: Int = 0) {
+        val diff = target - from
+        val valueAnimator = ValueAnimator
+            .ofInt(from, from + diff)
+            .setDuration(1000)
+        valueAnimator.addUpdateListener { animation ->
+            chargeLevel = animation.animatedValue as Int
+            invalidate()
+        }
+        valueAnimator.start()
+    }
 }

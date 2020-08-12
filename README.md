@@ -34,6 +34,7 @@ Library contains both `BatteryMeterView` and `BatteryMeterDrawable` classes. Fol
     app:batteryMeterTheme="rounded"
     app:batteryMeterUnknownColor="#e0e0e0" />
 ```
+If you want the battery indicator to animate to a charge level, you can call the method `animateToLevel(target)`, where **target** is the intended charge level. Optionally, you can pass a second parameter to this method if you want the animation to start from a different start level.
 
 Themes & States
 ---------------
